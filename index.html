@@ -220,38 +220,72 @@ body {
         </table>
     </div>
 
-    <div class="section">
-        <h2><span class="section-number">2</span>サンプル改善文 ＆ 添削体験</h2>
-        <div class="sample-improvement">
-            <!-- サンプル例 -->
-            <div class="before-after" style="margin-bottom:32px;">
-                <div class="before">
-                    <h4>【Before（例文）】</h4>
-                    <p>各種業務を担当していただきます。</p>
-                </div>
-                <div class="after">
-                    <h4>【After（添削例）】</h4>
-                    <p>まずは先輩社員のサポートのもと、商品管理や伝票入力を中心に担当。慣れてきたら取引先への納品やお客様対応もお任せします。分からないことはチーム全体でしっかりフォローします。</p>
-                </div>
-            </div>
-            <!-- 実際の入力＆添削機能 -->
-            <div class="before-after">
-                <div class="before">
-                    <h4>【Before（あなたの文章）】</h4>
-                    <textarea id="userBefore" class="comment-input" placeholder="今使っている求人票の文面を入力してください" rows="5"></textarea>
-                    <div class="pixie-tip">※Pixieが“高校生・保護者にも伝わる表現”へ自動添削します</div>
-                    <button class="btn-adv" onclick="doPixieAdvise()">Pixieローカル添削</button>
-                    <button class="btn-adv" onclick="doAITensaku()">AIリアルタイム添削</button>
-                </div>
-                <div class="after">
-                    <h4>【After（Pixie/AIの改善案・ヒアリング）】</h4>
-                    <div id="pixieAfter" class="pixieAfter-box" style="display:none"></div>
-                    <div id="aiAfter" class="pixieAfter-box" style="display:none"></div>
-                    <div id="loading" class="loading-typing" style="display:none;">添削中です<span class="loading-dot">...</span></div>
-                </div>
-            </div>
-        </div>
+<div class="section">
+  <h2><span class="section-number">2</span>AI文章添削</h2>
+  <!-- 3パターンのBefore/After -->
+  <div style="display:flex; flex-wrap:wrap; gap:32px; margin-bottom:30px;">
+    <div style="flex:1;min-width:280px;">
+      <strong>Before（例文：事務職）</strong>
+      <div style="background:#fff4ee; border-radius:12px; padding:16px; margin:12px 0;">
+        書類作成や電話対応などの事務全般を担当してもらいます。
+      </div>
     </div>
+    <div style="flex:1;min-width:280px;">
+      <strong>After（添削例）</strong>
+      <div style="background:#ebfaed; border-radius:12px; padding:16px; margin:12px 0;">
+        書類作成・データ入力・電話や来客対応など、幅広い事務業務を担当していただきます。周囲と連携しながら、正確かつ丁寧に取り組める方を歓迎します。
+      </div>
+    </div>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:32px; margin-bottom:30px;">
+    <div style="flex:1;min-width:280px;">
+      <strong>Before（例文：工場）</strong>
+      <div style="background:#fff4ee; border-radius:12px; padding:16px; margin:12px 0;">
+        工場でパンの生地をライン作業で作成してもらいます。
+      </div>
+    </div>
+    <div style="flex:1;min-width:280px;">
+      <strong>After（添削例）</strong>
+      <div style="background:#ebfaed; border-radius:12px; padding:16px; margin:12px 0;">
+        工場でパンの生地づくりを担当していただきます。ライン作業が中心ですが、分からないことは先輩が丁寧に指導しますので未経験でも安心です。
+      </div>
+    </div>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:32px; margin-bottom:30px;">
+    <div style="flex:1;min-width:280px;">
+      <strong>Before（例文：販売）</strong>
+      <div style="background:#fff4ee; border-radius:12px; padding:16px; margin:12px 0;">
+        店頭でのレジ業務、商品陳列、接客などをお願いします。
+      </div>
+    </div>
+    <div style="flex:1;min-width:280px;">
+      <strong>After（添削例）</strong>
+      <div style="background:#ebfaed; border-radius:12px; padding:16px; margin:12px 0;">
+        店舗でのレジ業務・商品の品出し・接客応対をお任せします。明るく元気な対応ができる方歓迎。未経験からスタートした先輩も多数活躍中です。
+      </div>
+    </div>
+  </div>
+  <!-- 入力フォーム -->
+  <div style="display:flex; gap:32px; flex-wrap:wrap;">
+    <div style="flex:1; min-width:340px;">
+      <strong>Before（御社の文面）</strong>
+      <textarea id="userBefore" class="comment-input" placeholder="例）特長 アットホームな雰囲気で安心して働けます" rows="5"></textarea>
+      <div style="color:#7bc142;font-size:13px;">
+        ※冒頭に「特長」「内容」「補足」「特記」のいずれかを入力してください。<br>
+        例：特長 会社のPR文（90文字以内）<br>
+        例：内容 仕事内容の説明（300文字以内）
+      </div>
+      <button class="btn-adv" onclick="doAITensaku()">AIで添削・自動補完</button>
+    </div>
+    <div style="flex:1; min-width:340px;">
+      <strong>After（AI添削結果・フィードバック）</strong>
+      <div id="aiAfter" class="pixieAfter-box" style="min-height:80px;background:#ebfaed; border-radius:8px; padding:16px; margin:10px 0; display:none"></div>
+      <div id="char-count" style="font-size:13px;color:#6bb65b;"></div>
+      <div id="loading" class="loading-typing" style="display:none;">添削中です<span class="loading-dot">...</span></div>
+    </div>
+  </div>
+</div>
+
 </div>
 <script>
 // チェックリスト制御
@@ -300,21 +334,29 @@ function doPixieAdvise() {
 function doAITensaku() {
     const input = document.getElementById('userBefore').value.trim();
     const aiOut = document.getElementById('aiAfter');
-    const pixieOut = document.getElementById('pixieAfter');
     const loading = document.getElementById('loading');
     aiOut.style.display = "none";
-    pixieOut.style.display = "none";
     aiOut.innerText = "";
+    document.getElementById('char-count').innerText = "";
     if (!input) { return; }
     loading.style.display = "flex";
+    // 冒頭ラベルで最大文字数・区分を判定
+    let maxLen = 300, type = "内容";
+    if (input.startsWith('特長')) { maxLen = 90; type = "特長"; }
+    else if (input.startsWith('内容')) { maxLen = 300; type = "内容"; }
+    else if (input.startsWith('補足')) { maxLen = 300; type = "補足"; }
+    else if (input.startsWith('特記')) { maxLen = 300; type = "特記"; }
     fetch('/tensaku', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: input })
+        body: JSON.stringify({ text: input, maxLen: maxLen })
     })
     .then(response => response.json())
     .then(data => {
         loading.style.display = "none";
+        const cleanText = data.result ? data.result.replace(/<br\s*\/?>/gi, '').replace(/\s/g, '') : '';
+        document.getElementById('char-count').innerHTML =
+            `<b>（${type}）</b>　AI添削後：<b>${cleanText.length}</b>文字 ／ 最大${maxLen}文字`;
         aiOut.innerHTML = `<b>【AI添削結果】</b><br>${(data.result || '（添削結果なし）').replace(/\n/g, '<br>')}`;
         aiOut.style.display = "block";
     })
@@ -324,6 +366,7 @@ function doAITensaku() {
         aiOut.style.display = "block";
     });
 }
+
 </script>
 </body>
 </html>
