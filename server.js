@@ -9,9 +9,11 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // OpenAI設定（APIキーはRenderの環境変数OPENAI_API_KEYで設定）
-const configuration = new Configuration({
+const OpenAI = require('openai');
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
 const openai = new OpenAIApi(configuration);
 
 // プロンプト生成関数

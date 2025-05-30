@@ -219,93 +219,45 @@ body {
         </table>
     </div>
 
-    <div class="section">
-        <h2><span class="section-number">2</span>AI文章添削</h2>
-        <!-- 3パターンのBefore/After -->
-        <div style="display:flex; flex-wrap:wrap; gap:32px; margin-bottom:30px;">
-            <div style="flex:1;min-width:280px;">
-            <strong>Before（例文：事務職）</strong>
-            <div style="background:#fff4ee; border-radius:12px; padding:16px; margin:12px 0;">
-                書類作成や電話対応などの事務全般を担当してもらいます。
-            </div>
-            </div>
-            <div style="flex:1;min-width:280px;">
-            <strong>After（添削例）</strong>
-            <div style="background:#ebfaed; border-radius:12px; padding:16px; margin:12px 0;">
-                書類作成・データ入力・電話や来客対応など、幅広い事務業務を担当していただきます。周囲と連携しながら、正確かつ丁寧に取り組める方を歓迎します。
-            </div>
-            </div>
-        </div>
-        <div style="display:flex; flex-wrap:wrap; gap:32px; margin-bottom:30px;">
-            <div style="flex:1;min-width:280px;">
-            <strong>Before（例文：工場）</strong>
-            <div style="background:#fff4ee; border-radius:12px; padding:16px; margin:12px 0;">
-                工場でパンの生地をライン作業で作成してもらいます。
-            </div>
-            </div>
-            <div style="flex:1;min-width:280px;">
-            <strong>After（添削例）</strong>
-            <div style="background:#ebfaed; border-radius:12px; padding:16px; margin:12px 0;">
-                工場でパンの生地づくりを担当していただきます。ライン作業が中心ですが、分からないことは先輩が丁寧に指導しますので未経験でも安心です。
-            </div>
-            </div>
-        </div>
-        <div style="display:flex; flex-wrap:wrap; gap:32px; margin-bottom:30px;">
-            <div style="flex:1;min-width:280px;">
-            <strong>Before（例文：販売）</strong>
-            <div style="background:#fff4ee; border-radius:12px; padding:16px; margin:12px 0;">
-                店頭でのレジ業務、商品陳列、接客などをお願いします。
-            </div>
-            </div>
-            <div style="flex:1;min-width:280px;">
-            <strong>After（添削例）</strong>
-            <div style="background:#ebfaed; border-radius:12px; padding:16px; margin:12px 0;">
-                店舗でのレジ業務・商品の品出し・接客応対をお任せします。明るく元気な対応ができる方歓迎。未経験からスタートした先輩も多数活躍中です。
-            </div>
-            </div>
-        </div>
-        <!-- 入力フォーム -->
-        <div style="display:flex; gap:32px; flex-wrap:wrap;">
-            <div style="flex:1; min-width:340px;">
-            <strong>Before（御社の文面）</strong>
-            <textarea id="userBefore" class="comment-input" placeholder="例）特長 アットホームな雰囲気で安心して働けます" rows="5"></textarea>
-            <div style="color:#7bc142;font-size:13px;">
-                ※冒頭に「特長」「内容」「補足」「特記」のいずれかを入力してください。<br>
-                例：特長 会社のPR文（90文字以内）<br>
-                例：内容 仕事内容の説明（300文字以内）
-            </div>
-            <button class="btn-adv" onclick="doAITensaku()">AIで添削・自動補完</button>
-            </div>
-            <div style="flex:1; min-width:340px;">
-            <strong>After（AI添削結果・フィードバック）</strong>
-            <div id="aiAfter" class="pixieAfter-box" style="min-height:80px;background:#ebfaed; border-radius:8px; padding:16px; margin:10px 0; display:none"></div>
-            <div id="char-count" style="font-size:13px;color:#6bb65b;"></div>
-            <div id="loading" class="loading-typing" style="display:none;">添削中です<span class="loading-dot">...</span></div>
-            </div>
-        </div>
+<!-- 既存レイアウト・CSS・ヘッダー等そのまま -->
+
+<div class="section">
+  <h2><span class="section-number">2</span>AI文章添削</h2>
+  <div style="display:flex; gap:32px; flex-wrap:wrap;">
+    <div style="flex:1; min-width:340px;">
+      <strong>Before（御社の文面）</strong>
+      <textarea id="userBefore" class="comment-input" placeholder="例）特長 アットホームな雰囲気で安心して働けます" rows="5"></textarea>
+      <div style="color:#7bc142;font-size:13px;">
+        ※冒頭に「特長」「内容」「補足」「特記」のいずれかを入力してください。<br>
+        例：特長 会社のPR文（90文字以内）<br>
+        例：内容 仕事内容の説明（300文字以内）
+      </div>
+      <button class="btn-adv" onclick="doAITensaku()">AIで添削・自動補完</button>
     </div>
+    <div style="flex:1; min-width:340px;">
+      <strong>After（AI添削結果・フィードバック）</strong>
+      <div id="aiAfter" class="pixieAfter-box" style="min-height:80px;background:#ebfaed; border-radius:8px; padding:16px; margin:10px 0; display:none"></div>
+      <div id="advice-box" class="pixieAfter-box" style="background:#e2f7e5; color:#207030; font-size:0.97rem; display:none"></div>
+      <div id="char-count" style="font-size:13px;color:#6bb65b;"></div>
+      <div id="loading" class="loading-typing" style="display:none;">添削中です<span class="loading-dot">...</span></div>
+    </div>
+  </div>
 </div>
 
 <script>
-// チェックリスト制御
-function toggleAllCheckboxes(flag) {
-    document.querySelectorAll('.checkbox').forEach(cb => cb.checked = flag);
-}
-function clearAllComments() {
-    document.querySelectorAll('.comment-input').forEach(tx => tx.value = '');
-}
-
-// AIリアルタイム添削API
 function doAITensaku() {
     const input = document.getElementById('userBefore').value.trim();
     const aiOut = document.getElementById('aiAfter');
+    const adviceOut = document.getElementById('advice-box');
     const loading = document.getElementById('loading');
     aiOut.style.display = "none";
+    adviceOut.style.display = "none";
     aiOut.innerText = "";
+    adviceOut.innerText = "";
     document.getElementById('char-count').innerText = "";
     if (!input) { return; }
     loading.style.display = "flex";
-    // 冒頭ラベルで最大文字数・区分を判定
+    // 最大文字数設定
     let maxLen = 300, type = "内容";
     if (input.startsWith('特長')) { maxLen = 90; type = "特長"; }
     else if (input.startsWith('内容')) { maxLen = 300; type = "内容"; }
@@ -319,11 +271,14 @@ function doAITensaku() {
     .then(response => response.json())
     .then(data => {
         loading.style.display = "none";
-        const cleanText = data.result ? data.result.replace(/<br\s*\/?>/gi, '').replace(/\s/g, '') : '';
-        document.getElementById('char-count').innerHTML =
-            `<b>（${type}）</b>　AI添削後：<b>${cleanText.length}</b>文字 ／ 最大${maxLen}文字`;
         aiOut.innerHTML = `<b>【AI添削結果】</b><br>${(data.result || '（添削結果なし）').replace(/\n/g, '<br>')}`;
         aiOut.style.display = "block";
+        document.getElementById('char-count').innerHTML =
+            `<b>（${type}）</b>　AI添削後：<b>${data.length}</b>文字 ／ 最大${maxLen}文字`;
+        if(data.advice && data.advice !== "なし") {
+          adviceOut.innerHTML = `<b>【アドバイス】</b><br>${(data.advice || '').replace(/\n/g, '<br>')}`;
+          adviceOut.style.display = "block";
+        }
     })
     .catch(e => {
         loading.style.display = "none";
@@ -332,5 +287,7 @@ function doAITensaku() {
     });
 }
 </script>
+
+<!-- 既存footerやその他部分もそのまま -->
 </body>
 </html>
