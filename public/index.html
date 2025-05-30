@@ -45,20 +45,13 @@ body {
     background: linear-gradient(135deg, #92d050 80%, #7bc142 100%);
     color: #fff; padding: 13px 7px; text-align: left; font-weight: 600; font-size: 1rem;
 }
-.checklist-table th.check-header {
-    width: 90px;          /* ←幅を広げて折り返し防止 */
-    font-size: 1rem;      /* ←フォントサイズもやや小さく統一 */
-    text-align: center;   /* ←中央揃え */
-    white-space: nowrap;  /* ←折り返し禁止 */
-    letter-spacing: 0.03em;
-}
 .checklist-table td {
     padding: 11px 7px; border-bottom: 1px solid #eef7e8; vertical-align: top;
 }
 .checklist-table tr:last-child td { border-bottom: none; }
-.checkbox-cell { text-align: center; width: 70px; }
+.checkbox-cell { text-align: center; width: 60px; }
 .checkbox {
-    width: 22px; height: 22px; accent-color: #92d050; transform: scale(1.12);
+    width: 22px; height: 22px; accent-color: #92d050; transform: scale(1.08);
 }
 .comment-cell { width: 220px; }
 .comment-input {
@@ -70,41 +63,49 @@ body {
     outline: none; border-color: #92d050; box-shadow: 0 0 7px #92d05044;
 }
 .sample-improvement { margin-top: 5px; }
-.before-after {
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 30px;
-    margin-bottom: 26px;
+
+/* --- AI文章添削レイアウトここから --- */
+.ai-example-row {
+    display: flex;
+    gap: 34px;
+    margin-bottom: 34px;
 }
-.before-card, .after-card {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(180,220,160,0.12);
-    padding: 22px 24px 18px 24px;
-    display: flex; flex-direction: column;
-    min-height: 110px;
+.ai-example-col {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
 }
-.before-card {
-    background: #fff6f4; border-left: 7px solid #e67e22;
+.ai-example-col-title {
+    font-weight: bold;
+    font-size: 1.12rem;
+    margin-bottom: 4px;
+    color: #e67e22;
 }
-.after-card {
-    background: #f3fcf1; border-left: 7px solid #27ae60;
+.ai-example-col-title.green { color: #27ae60; }
+.ai-example-box {
+    background: #fff8f2;
+    border-radius: 11px;
+    padding: 14px 20px;
+    font-size: 1.09rem;
+    color: #8d5514;
+    box-shadow: none;
+    border: none;
+    margin-bottom: 0;
 }
-.before-card h4, .after-card h4 {
-    margin-bottom: 11px; font-weight: 700; font-size: 1.09rem; letter-spacing: .02em;
+.ai-example-box.green {
+    background: #ebfaed;
+    color: #185a27;
 }
-.before-card h4 { color: #e67e22;}
-.after-card h4 { color: #27ae60;}
-.before-example {
-    background: #ffe5d5; color: #993d00; border-radius: 8px; padding: 8px 14px; margin-bottom: 7px;
-    font-size: 1.03rem;
-    word-break: break-all;
+@media (max-width: 900px) {
+    .container { padding: 12px 2vw 36px 2vw; }
+    .header { padding: 28px 5px 13px 5px; }
+    .section { padding: 19px 4vw; }
+    .ai-example-row { flex-direction: column; gap: 12px; }
+    .ai-example-col { gap: 10px; }
 }
-.after-example {
-    background: #d5f8dc; color: #174e13; border-radius: 8px; padding: 8px 14px; margin-bottom: 7px;
-    font-size: 1.03rem;
-    word-break: break-all;
-}
+/* --- ここまで --- */
+
 .pixie-tip {
     color: #5e8f3c; font-size: .98rem; margin-top: 10px; margin-bottom: 0;
 }
@@ -132,13 +133,6 @@ body {
     50% {opacity: 1;}
     100% {opacity:0.2;}
 }
-@media (max-width: 900px) {
-    .container { padding: 12px 2vw 36px 2vw; }
-    .header { padding: 28px 5px 13px 5px; }
-    .section { padding: 19px 4vw; }
-    .before-after { grid-template-columns: 1fr; gap: 16px; }
-    .before-card, .after-card { padding: 18px 10px; }
-}
 </style>
 </head>
 <body>
@@ -158,10 +152,10 @@ body {
         <table class="checklist-table" id="checklist-table">
             <thead>
                 <tr>
-                    <th>No</th>
+                    <th style="width:35px;">No</th>
                     <th>チェック項目</th>
-                    <th class="check-header">チェック</th>
-                    <th>コメント記入欄</th>
+                    <th class="checkbox-cell">チェック</th>
+                    <th class="comment-cell">コメント記入欄</th>
                 </tr>
             </thead>
             <tbody>
@@ -250,26 +244,25 @@ body {
     </div>
 
     <!-- AI文章添削：例文カード型（旧レイアウト風） -->
-<div class="section">
-  <h2><span class="section-number">2</span>AI文章添削例</h2>
-  <div class="before-after">
-    <div class="before-card">
-      <h4>Before（例文：事務職）</h4>
-      <div class="before-example">書類作成や電話対応などの事務全般を担当してもらいます。</div>
-      <h4>Before（例文：工場）</h4>
-      <div class="before-example">工場でパンの生地をライン作業で作成してもらいます。</div>
-      <h4>Before（例文：販売）</h4>
-      <div class="before-example">店頭でのレジ業務、商品陳列、接客などをお願いします。</div>
+    <div class="section">
+        <h2><span class="section-number">2</span>AI文章添削例</h2>
+        <div class="ai-example-row">
+            <div class="ai-example-col">
+                <div class="ai-example-col-title">Before（例文：事務職）</div>
+                <div class="ai-example-box">書類作成や電話対応などの事務全般を担当してもらいます。</div>
+                <div class="ai-example-col-title">Before（例文：工場）</div>
+                <div class="ai-example-box">工場でパンの生地をライン作業で作成してもらいます。</div>
+                <div class="ai-example-col-title">Before（例文：販売）</div>
+                <div class="ai-example-box">店頭でのレジ業務、商品陳列、接客などをお願いします。</div>
+            </div>
+            <div class="ai-example-col">
+                <div class="ai-example-col-title green">After（添削例）</div>
+                <div class="ai-example-box green">書類作成・データ入力・電話や来客対応など、幅広い事務業務を担当していただきます。周囲と連携しながら、正確かつ丁寧に取り組める方を歓迎します。</div>
+                <div class="ai-example-box green">工場でパンの生地づくりを担当していただきます。ライン作業が中心ですが、分からないことは先輩が丁寧に指導しますので未経験でも安心です。</div>
+                <div class="ai-example-box green">店舗でのレジ業務・商品の品出し・接客応対をお任せします。明るく元気な対応ができる方歓迎。未経験からスタートした先輩も多数活躍中です。</div>
+            </div>
+        </div>
     </div>
-    <div class="after-card">
-      <h4>After（添削例）</h4>
-      <div class="after-example">書類作成・データ入力・電話や来客対応など、幅広い事務業務を担当していただきます。周囲と連携しながら、正確かつ丁寧に取り組める方を歓迎します。</div>
-      <div class="after-example">工場でパンの生地づくりを担当していただきます。ライン作業が中心ですが、分からないことは先輩が丁寧に指導しますので未経験でも安心です。</div>
-      <div class="after-example">店舗でのレジ業務・商品の品出し・接客応対をお任せします。明るく元気な対応ができる方歓迎。未経験からスタートした先輩も多数活躍中です。</div>
-    </div>
-  </div>
-</div>
-
 
 
 
