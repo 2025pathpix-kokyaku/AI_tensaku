@@ -84,13 +84,29 @@ body {
     flex-direction: column;
     gap: 22px;
 }
+/* 例文のBefore/After（既存） */
 .ai-example-col-title {
+    font-size: 1.14rem;
     font-weight: bold;
-    font-size: 1.12rem;
-    margin-bottom: 4px;
+    margin-bottom: 7px;
     color: #e67e22;
+    letter-spacing: 0.01em;
 }
 .ai-example-col-title.green { color: #27ae60; }
+
+/* ↓↓↓追加↓↓↓ */
+/* ユーザー入力欄のタイトル（Before/After） */
+.ai-user-title {
+    font-size: 1.14rem;
+    font-weight: bold;
+    margin-bottom: 7px;
+    letter-spacing: 0.01em;
+    color: #297ca1;   /* 青緑系：分かりやすく・落ち着きあるカラー例 */
+}
+.ai-user-title.after {
+    color: #369945;   /* グリーン系（Afterにふさわしい、でも例文とは違う色） */
+}
+
 .ai-example-box {
     background: #fff8f2;
     border-radius: 11px;
@@ -272,27 +288,27 @@ body {
   </div>
 
   <!-- ↓↓↓ ここから下も同じ枠内に入れる ↓↓↓ -->
-  <div class="ai-feedback-block" style="margin-top:30px;">
-    <div style="display:flex; gap:32px; flex-wrap:wrap;">
-      <div style="flex:1; min-width:340px;">
-        <strong>Before（御社の文面）</strong>
-        <textarea id="userBefore" class="comment-input" placeholder="例）特長 アットホームな雰囲気で安心して働けます" rows="5" style="resize: vertical;"></textarea>
-        <div style="color:#7bc142;font-size:13px;">
-          ※冒頭に「特長」「内容」「補足」「特記」のいずれかを入力してください。<br>
-          例：特長 会社のPR文（90文字以内）<br>
-          例：内容 仕事内容の説明（300文字以内）
-        </div>
-        <button class="btn-adv" onclick="doAITensaku()">AIで添削・自動補完</button>
+<div class="ai-feedback-block" style="margin-top:30px;">
+  <div style="display:flex; gap:32px; flex-wrap:wrap;">
+    <div style="flex:1; min-width:340px;">
+      <div class="ai-user-title">Before（御社の文面）</div>
+      <textarea id="userBefore" class="comment-input" placeholder="例）特長 アットホームな雰囲気で安心して働けます" rows="5" style="resize: vertical;"></textarea>
+      <div style="color:#7bc142;font-size:13px;">
+        ※冒頭に「特長」「内容」「補足」「特記」のいずれかを入力してください。<br>
+        例：特長 会社のPR文（90文字以内）<br>
+        例：内容 仕事内容の説明（300文字以内）
       </div>
-      <div style="flex:1; min-width:340px;">
-        <strong>After（AI添削結果・フィードバック）</strong>
-        <div id="aiAfter" class="pixieAfter-box" style="min-height:80px;background:#ebfaed; border-radius:8px; padding:16px; margin:10px 0; display:none"></div>
-        <div id="advice-box" class="pixieAfter-box" style="background:#e2f7e5; color:#207030; font-size:0.97rem; display:none"></div>
-        <div id="char-count" style="font-size:13px;color:#6bb65b;"></div>
-        <div id="loading" class="loading-typing" style="display:none;">添削中です<span class="loading-dot">...</span></div>
-      </div>
+      <button class="btn-adv" onclick="doAITensaku()">AIで添削・自動補完</button>
+    </div>
+    <div style="flex:1; min-width:340px;">
+      <div class="ai-user-title after">After（AI添削結果・フィードバック）</div>
+      <div id="aiAfter" class="pixieAfter-box" style="min-height:80px;background:#ebfaed; border-radius:8px; padding:16px; margin:10px 0; display:none"></div>
+      <div id="advice-box" class="pixieAfter-box" style="background:#e2f7e5; color:#207030; font-size:0.97rem; display:none"></div>
+      <div id="char-count" style="font-size:13px;color:#6bb65b;"></div>
+      <div id="loading" class="loading-typing" style="display:none;">添削中です<span class="loading-dot">...</span></div>
     </div>
   </div>
+</div>
 </div>
 
 <script>
