@@ -1,61 +1,53 @@
-// server.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { Configuration, OpenAIApi } = require('openai');
 require('dotenv').config();
 
+const { OpenAI } = require('openai');  // ← v4/v5はこの書き方
 const app = express();
 const port = process.env.PORT || 10000;
 
-// Middlewares
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static('public')); // index.html等をpublicフォルダに
+app.use(express.static('public'));
 
-// OpenAI初期化
-const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY
-});
-const openai = new OpenAIApi(configuration);
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-// AI添削エンドポイント
 app.post('/tensaku', async (req, res) => {
     const { text, maxLen } = req.body;
     try {
-        // 強化プロンプト（高卒求人票らしさを絶対反映！）
-        const completion = await openai.createChatCompletion({
+        // --- systemプロンプトの部分をKATSU様用にカスタマイズ ---
+        const SYSTEM_PROMPT = `あなたは「高卒求人票 作成チェックリスト ＆ リアルタイム添削アドバイス」のための日本語文章添削AIです。
+必ず下記のルールで出力してください。
+【ルール】
+1. 入力された文を「高校新卒求人票向け」に誰が見ても伝わる自然な日本語に300文字以内で添削しなさい。
+2. 書き方が不十分な場合、より高校生や保護者にも分かる具体的な文例にリライトすること。
+3. 「特長」の場合は会社のPRとして魅力が伝わるように（最大90文字）。
+4. 必ず、必要に応じて端的な【アドバイス】（改善点や工夫案など1～2文で）を加えてください。
+5. 出力例：
+【AI添削結果】
+（添削後の文章）
+【アドバイス】
+（簡単なアドバイス、無い場合は「なし」と出力）`;
+
+        const completion = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
             messages: [
-                {
-                    role: "system",
-                    content: `
-あなたは日本語の高卒求人票作成アドバイザーです。与えられた文を、実際の高卒求人票に最適な形で${maxLen}文字以内で分かりやすく、必ず以下の点を反映して添削してください。
-・未経験者でも安心して応募できる雰囲気（丁寧な指導、先輩のサポート、チームでの協力など）
-・福利厚生や働きやすさ、育成制度、キャリアパスなども必ず触れる
-・高校生や保護者が安心する要素を盛り込む
-・仕事内容はなるべく具体的にイメージできる表現に
-添削後、必要があれば短いアドバイスも【アドバイス】の見出しで分けて記載してください。なければ「アドバイス：なし」と記載。
-                    `
-                },
+                { role: "system", content: SYSTEM_PROMPT },
                 { role: "user", content: text }
             ],
             max_tokens: 512,
-            temperature: 0.6
+            temperature: 0.6,
         });
 
-        // ChatGPT出力のパース
-        let result = completion.data.choices[0].message.content || "";
+        let result = completion.choices[0].message.content || "";
         let advice = "";
+        // 出力の整形
         if (result.includes("【アドバイス】")) {
             [result, advice] = result.split("【アドバイス】");
             advice = advice.trim();
         }
-        result = result.trim();
-
-        // 余分なヘッダーなど除去
-        result = result.replace(/^【AI添削結果】/, '').trim();
-        advice = advice.replace(/^アドバイス[:：]?/, '').trim();
+        result = result.replace("【AI添削結果】", "").trim();
 
         res.json({
             result,
@@ -67,7 +59,6 @@ app.post('/tensaku', async (req, res) => {
     }
 });
 
-// サーバー起動
 app.listen(port, () => {
     console.log(`AI添削サーバー起動: http://localhost:${port}/`);
 });
