@@ -132,6 +132,51 @@ body {
     .before-after { grid-template-columns: 1fr; gap: 16px; }
     .before-card, .after-card { padding: 18px 10px; }
 }
+    .ai-example-boxes {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  background: #f3fcf6;
+  border-radius: 18px;
+  padding: 26px 20px;
+  margin-bottom: 38px;
+}
+.ai-example-left, .ai-example-right {
+  flex: 1 1 380px;
+  min-width: 320px;
+}
+.ai-sample-title {
+  font-weight: bold;
+  margin: 15px 0 7px 0;
+  color: #e67e22;
+  font-size: 1.11rem;
+  letter-spacing: 0.04em;
+}
+.ai-sample-title.green { color: #27ae60; }
+.ai-sample-before {
+  background: #fff8f2;
+  border: 1.7px solid #e67e22;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin-bottom: 13px;
+  font-size: 1.09rem;
+  color: #8d5514;
+  box-shadow: none;
+}
+.ai-sample-after {
+  background: #ebfaed;
+  border: 1.7px solid #27ae60;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin-bottom: 13px;
+  font-size: 1.09rem;
+  color: #185a27;
+  box-shadow: none;
+}
+@media (max-width: 900px) {
+  .ai-example-boxes { flex-direction: column; }
+}
+
 </style>
 </head>
 <body>
@@ -243,24 +288,32 @@ body {
     </div>
 
     <!-- AI文章添削：例文カード型（旧レイアウト風） -->
-    <div class="section">
-      <h2><span class="section-number">2</span>AI文章添削</h2>
-      <div class="before-after">
-        <div class="before-card">
-          <h4>Before（例文：事務職）</h4>
-          <div class="before-example">書類作成や電話対応などの事務全般を担当してもらいます。</div>
-          <h4>Before（例文：工場）</h4>
-          <div class="before-example">工場でパンの生地をライン作業で作成してもらいます。</div>
-          <h4>Before（例文：販売）</h4>
-          <div class="before-example">店頭でのレジ業務、商品陳列、接客などをお願いします。</div>
-        </div>
-        <div class="after-card">
-          <h4>After（添削例）</h4>
-          <div class="after-example">書類作成・データ入力・電話や来客対応など、幅広い事務業務を担当していただきます。周囲と連携しながら、正確かつ丁寧に取り組める方を歓迎します。</div>
-          <div class="after-example">工場でパンの生地づくりを担当していただきます。ライン作業が中心ですが、分からないことは先輩が丁寧に指導しますので未経験でも安心です。</div>
-          <div class="after-example">店舗でのレジ業務・商品の品出し・接客応対をお任せします。明るく元気な対応ができる方歓迎。未経験からスタートした先輩も多数活躍中です。</div>
-        </div>
+  <div class="section">
+  <h2><span class="section-number">2</span>AI文章添削</h2>
+  <div class="ai-example-boxes">
+    <div class="ai-example-left">
+      <div class="ai-sample-title">Before（例文：事務職）</div>
+      <div class="ai-sample-before">書類作成や電話対応などの事務全般を担当してもらいます。</div>
+      <div class="ai-sample-title">Before（例文：工場）</div>
+      <div class="ai-sample-before">工場でパンの生地をライン作業で作成してもらいます。</div>
+      <div class="ai-sample-title">Before（例文：販売）</div>
+      <div class="ai-sample-before">店頭でのレジ業務、商品陳列、接客などをお願いします。</div>
+    </div>
+    <div class="ai-example-right">
+      <div class="ai-sample-title green">After（添削例）</div>
+      <div class="ai-sample-after">
+        書類作成・データ入力・電話や来客対応など、幅広い事務業務を担当していただきます。周囲と連携しながら、正確かつ丁寧に取り組める方を歓迎します。
       </div>
+      <div class="ai-sample-after">
+        工場でパンの生地づくりを担当していただきます。ライン作業が中心ですが、分からないことは先輩が丁寧に指導しますので未経験でも安心です。
+      </div>
+      <div class="ai-sample-after">
+        店舗でのレジ業務・商品の品出し・接客応対をお任せします。明るく元気な対応ができる方歓迎。未経験からスタートした先輩も多数活躍中です。
+      </div>
+    </div>
+  </div>
+</div>
+
 
       <!-- ユーザー独自の添削入力欄 -->
       <div style="display:flex; gap:32px; flex-wrap:wrap;">
