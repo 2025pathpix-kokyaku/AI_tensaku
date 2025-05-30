@@ -127,7 +127,17 @@ body {
     .section { padding: 19px 4vw; }
     .ai-example-row { flex-direction: column; gap: 12px; }
     .ai-example-col { gap: 10px; }
+    /* 添削入力・結果を縦並びに切り替え */
+    .ai-user-row {
+        flex-direction: column !important;
+        gap: 18px !important;
+    }
+    .ai-user-row > div {
+        min-width: unset !important;
+        width: 100% !important;
+    }
 }
+
 /* --- ここまで --- */
 
 .pixie-tip {
@@ -289,7 +299,7 @@ body {
 
   <!-- ↓↓↓ ここから下も同じ枠内に入れる ↓↓↓ -->
 <div class="ai-feedback-block" style="margin-top:30px;">
-  <div style="display:flex; gap:32px; flex-wrap:wrap;">
+   <div class="ai-user-row" style="display:flex; gap:32px; flex-wrap:wrap;">
     <div style="flex:1; min-width:340px;">
       <div class="ai-user-title">Before（御社の文面）</div>
       <textarea id="userBefore" class="comment-input" placeholder="例）特長 アットホームな雰囲気で安心して働けます" rows="5" style="resize: vertical;"></textarea>
