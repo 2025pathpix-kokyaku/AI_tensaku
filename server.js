@@ -1,30 +1,24 @@
-// server.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { Configuration, OpenAIApi } = require('openai');
+const { OpenAI } = require('openai');  // ←ここだけ注意！
 require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 10000;
 
-// Middlewares
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// OpenAIの初期化
-const configuration = new Configuration({
+const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
-const openai = new OpenAIApi(configuration);
 
-// AI添削エンドポイント
 app.post('/tensaku', async (req, res) => {
     const { text, maxLen } = req.body;
     try {
-        // ChatGPT（gpt-3.5-turbo）に指示
-        const completion = await openai.createChatCompletion({
+        const completion = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
             messages: [
                 { role: "system", content: "あなたは日本語の文章添削アドバイザーです。与えられた文を高卒求人票用に分かりやすく300文字以内で自然な日本語に添削し、必要があれば短いアドバイスも付けてください。" },
@@ -34,10 +28,8 @@ app.post('/tensaku', async (req, res) => {
             temperature: 0.6
         });
 
-        // ChatGPTからの出力テキストをパース
-        let result = completion.data.choices[0].message.content || "";
+        let result = completion.choices[0].message.content || "";
         let advice = "";
-        // "【アドバイス】"などで分割
         if (result.includes("【アドバイス】")) {
             [result, advice] = result.split("【アドバイス】");
             advice = advice.trim();
@@ -54,7 +46,6 @@ app.post('/tensaku', async (req, res) => {
     }
 });
 
-// サーバー起動
 app.listen(port, () => {
     console.log(`AI添削サーバー起動: http://localhost:${port}/`);
 });
