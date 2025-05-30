@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { Configuration, OpenAIApi } = require('openai');
+const OpenAI = require("openai");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -8,10 +8,10 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
 
-// 必ずご自身のAPIキーをセット（Render環境変数OK）
-const apiKey = process.env.OPENAI_API_KEY || 'YOUR_OPENAI_API_KEY';
-const configuration = new Configuration({ apiKey });
-const openai = new OpenAIApi(configuration);
+// APIキーはRender環境変数（OPENAI_API_KEY）から取得
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 app.post('/tensaku', async (req, res) => {
     try {
@@ -21,7 +21,6 @@ app.post('/tensaku', async (req, res) => {
         if (text.startsWith('補足')) type = "補足";
         if (text.startsWith('特記')) type = "特記";
 
-        // ---- PROMPTここから ----
         let PROMPT = `
 あなたは未経験高校生向け求人票添削AIです。
 【ルール】
@@ -40,11 +39,8 @@ ${text}
 【AI添削結果】
 `;
 
-        // ---- PROMPTここまで ----
-
-        // OpenAIリクエスト
-        const response = await openai.createChatCompletion({
-            model: "gpt-4o",  // gpt-4o/gpt-4-turbo/など
+        const response = await openai.chat.completions.create({
+            model: "gpt-4o",
             messages: [
                 { role: "system", content: "あなたは高校新卒求人票のプロ添削AIです。" },
                 { role: "user", content: PROMPT }
@@ -53,9 +49,7 @@ ${text}
             temperature: 0.3,
         });
 
-        let result = response.data.choices[0].message.content.trim();
-
-        // index.htmlのjs側でカウント用改行・空白除去
+        let result = response.choices[0].message.content.trim();
         res.json({ result });
     } catch (e) {
         res.status(500).json({ result: "AIエラー：" + e.message });
