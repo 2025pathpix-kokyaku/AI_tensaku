@@ -41,19 +41,16 @@ body {
     width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; border-radius: 10px;
     overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06);
 }
-.checklist-table th.checkbox-cell {
-    background: linear-gradient(135deg, #92d050 80%, #7bc142 100%) !important;
+.checklist-table th {
+    background: linear-gradient(135deg, #92d050 80%, #7bc142 100%);
     color: #fff;
-    width: 60px;
-    min-width: 60px;
-    max-width: 60px;
-    text-align: center;
-    white-space: nowrap;    /* ←改行防止 */
+    padding: 13px 7px;
+    text-align: left;
+    font-weight: 600;
     font-size: 1rem;
-    padding-left: 2px;
-    padding-right: 2px;
-    letter-spacing: 0;
+    white-space: nowrap;    /* 追加: 改行を防ぐ */
 }
+
 
 
 .checklist-table td {
