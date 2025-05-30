@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高卒求人票作成チェックリスト＆リアルタイム添削アドバイス</title>
+<style>
+body {
+    font-family: 'Segoe UI', 'Noto Sans JP', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.7;
+    color: #333;
+    background: linear-gradient(135deg, #92d050 0%, #e0f8e6 100%);
+    min-height: 100vh;
+    margin: 0;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 30px 12px 60px 12px; }
+.header {
+    background: #fff; border-radius: 20px; padding: 40px 25px 25px 25px; margin-bottom: 30px; text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.09); border: 1px solid #e3f7cb;
+}
+.header h1 { font-size: 2.3rem; color: #204100; margin-bottom: 13px; font-weight: 800; letter-spacing: 1.2px; }
+.company-name { font-size: 1.2rem; color: #66a635; font-weight: 500; margin-top: 2px; }
+.section { background: #fff; border-radius: 18px; padding: 36px 18px; margin-bottom: 30px; box-shadow: 0 8px 32px rgba(0,0,0,0.08); border: 1px solid #e3f7cb; }
+.section h2 {
+    font-size: 1.35rem; color: #297005; margin-bottom: 22px; font-weight: 700; display: flex; align-items: center;
+}
+.section-number {
+    background: linear-gradient(135deg, #92d050 60%, #7bc142 100%);
+    color: #fff; width: 38px; height: 38px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; margin-right: 15px; font-weight: 700; font-size: 1.14rem;
+}
+.checklist-controls {
+    margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 16px;
+}
+.checklist-controls button {
+    background: #92d050; color: #fff; border: none; border-radius: 7px; padding: 8px 18px;
+    font-size: 1rem; cursor: pointer; margin-bottom: 7px; transition: background 0.2s;
+}
+.checklist-controls button:hover { background: #7bc142; }
+.checklist-table {
+    width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; border-radius: 10px;
+    overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+.checklist-table th {
+    background: linear-gradient(135deg, #92d050 80%, #7bc142 100%);
+    color: #fff; padding: 13px 7px; text-align: left; font-weight: 600; font-size: 1rem;
+}
+.checklist-table td {
+    padding: 11px 7px; border-bottom: 1px solid #eef7e8; vertical-align: top;
+}
+.checklist-table tr:last-child td { border-bottom: none; }
+.checkbox-cell { text-align: center; width: 70px; }
+.checkbox {
+    width: 22px; height: 22px; accent-color: #92d050; transform: scale(1.12);
+}
+.comment-cell { width: 220px; }
+.comment-input {
+    width: 98%; min-height: 52px; padding: 7px 10px; border: 2px solid #e3f7cb; border-radius: 8px;
+    font-family: inherit; resize: vertical; font-size: 1rem;
+}
+.comment-input:focus {
+    outline: none; border-color: #92d050; box-shadow: 0 0 7px #92d05044;
+}
+.sample-improvement { margin-top: 5px; }
+.before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.before, .after {
+    padding: 19px 14px 20px 14px; border-radius: 12px; position: relative; min-height: 110px;
+}
+.before {
+    background: #fff6f4; border-left: 5px solid #e67e22;
+}
+.after {
+    background: #f3fcf1; border-left: 5px solid #27ae60;
+    display: flex; flex-direction: column; justify-content: flex-start;
+}
+.before h4, .after h4 { margin-bottom: 9px; font-weight: 700; font-size: 1.04rem; }
+.before h4 { color: #e67e22;}
+.after h4 { color: #27ae60;}
+.pixie-tip {
+    color: #5e8f3c; font-size: .98rem; margin-top: 10px; margin-bottom: 0;
+}
+.pixieAfter-box {
+    min-height: 78px; background: #eafee6; padding: 12px; border-radius: 8px;
+    font-size: 1.01rem; color: #174e13; white-space: pre-line;
+}
+.btn-adv {
+    background: #92d050; color: #fff; border: none; border-radius: 7px; padding: 7px 21px;
+    font-size: 1rem; cursor: pointer; margin-top: 14px; align-self: flex-end; font-weight: 700;
+    transition: background 0.2s;
+}
+.btn-adv:hover { background: #7bc142; }
+.loading-typing {
+    margin-top: 8px;
+    color: #299900;
+    font-size: 1.08rem;
+    font-weight: bold;
+    letter-spacing: 1.2px;
+    display: flex; align-items: center;
+}
+.loading-dot {animation: blink 1s infinite;}
+@keyframes blink {
+    0% { opacity: 0.2;}
+    50% {opacity: 1;}
+    100% {opacity:0.2;}
+}
+@media (max-width: 900px) {
+    .container { padding: 12px 2vw 36px 2vw; }
+    .header { padding: 28px 5px 13px 5px; }
+    .section { padding: 19px 4vw; }
+    .before-after { grid-template-columns: 1fr; gap: 16px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>高卒求人票 作成チェックリスト ＆ リアルタイム添削アドバイス</h1>
+        <div class="company-name">株式会社Pathpix</div>
+    </div>
+
+    <div class="section">
+        <h2><span class="section-number">1</span>高卒求人票作成チェックリスト（企業担当者用）</h2>
+        <div class="checklist-controls">
+            <button onclick="toggleAllCheckboxes(true)">全てチェック</button>
+            <button onclick="toggleAllCheckboxes(false)">全て解除</button>
+            <button onclick="clearAllComments()">全コメント欄クリア</button>
+        </div>
+        <table class="checklist-table" id="checklist-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>チェック項目</th>
+                    <th>チェック</th>
+                    <th>コメント記入欄</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td>
+                    <td>求人票の記載内容は「誰に向けて」「どんな仕事か」が具体的か</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>2</td>
+                    <td>仕事内容は高校生にも分かる表現で説明されている</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>3</td>
+                    <td>雇用形態・勤務時間・休日などの条件が明確に記載されている</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>4</td>
+                    <td>賃金（手当・昇給・賞与含む）は最新かつ正確に記載されている</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>5</td>
+                    <td>福利厚生や各種制度についての記載がある</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>6</td>
+                    <td>配属予定部署・仕事内容が応募者にとって魅力的に表現されている</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>7</td>
+                    <td>応募要件（資格・経験・人物像など）が曖昧でなく具体的</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>8</td>
+                    <td>採用人数・選考プロセスが明確</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>9</td>
+                    <td>求人票の表現に専門用語や社内用語が多用されていない</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>10</td>
+                    <td>会社の特徴や強み、育成体制の説明が充実している</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>11</td>
+                    <td>高校生・保護者が不安に感じるであろう事項に配慮した表現</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>12</td>
+                    <td>若手社員の活躍事例や入社後のキャリアパスが記載されている</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>13</td>
+                    <td>地元採用やUターン希望者向けの配慮（勤務地・通勤手段等）がある</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>14</td>
+                    <td>応募前職場見学やインターンシップの案内が記載されている</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>15</td>
+                    <td>連絡先や担当者名が分かりやすく記載されている</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <!-- 追加分 -->
+                <tr><td>16</td>
+                    <td>入社後の定着支援（OJTやメンター制度等）の説明が明記されている</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>17</td>
+                    <td>会社の雰囲気やコミュニケーション施策（社内イベント等）が伝わる内容となっている</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>18</td>
+                    <td>多様な人材活躍・ダイバーシティ推進の取り組みが明記されている</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>19</td>
+                    <td>オンライン職場見学・説明会などデジタル施策が案内されている</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+                <tr><td>20</td>
+                    <td>法令遵守や安全衛生（労基・同一労働同一賃金等）への配慮が記載されている</td>
+                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
+                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2><span class="section-number">2</span>サンプル改善文 ＆ 添削体験</h2>
+        <div class="sample-improvement">
+            <!-- サンプル例 -->
+            <div class="before-after" style="margin-bottom:32px;">
+                <div class="before">
+                    <h4>【Before（例文）】</h4>
+                    <p>各種業務を担当していただきます。</p>
+                </div>
+                <div class="after">
+                    <h4>【After（添削例）】</h4>
+                    <p>まずは先輩社員のサポートのもと、商品管理や伝票入力を中心に担当。慣れてきたら取引先への納品やお客様対応もお任せします。分からないことはチーム全体でしっかりフォローします。</p>
+                </div>
+            </div>
+            <!-- 実際の入力＆添削機能 -->
+            <div class="before-after">
+                <div class="before">
+                    <h4>【Before（あなたの文章）】</h4>
+                    <textarea id="userBefore" class="comment-input" placeholder="今使っている求人票の文面を入力してください" rows="5"></textarea>
+                    <div class="pixie-tip">※Pixieが“高校生・保護者にも伝わる表現”へ自動添削します</div>
+                    <button class="btn-adv" onclick="doPixieAdvise()">Pixieローカル添削</button>
+                    <button class="btn-adv" onclick="doAITensaku()">AIリアルタイム添削</button>
+                </div>
+                <div class="after">
+                    <h4>【After（Pixie/AIの改善案・ヒアリング）】</h4>
+                    <div id="pixieAfter" class="pixieAfter-box" style="display:none"></div>
+                    <div id="aiAfter" class="pixieAfter-box" style="display:none"></div>
+                    <div id="loading" class="loading-typing" style="display:none;">添削中です<span class="loading-dot">...</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+// チェックリスト制御
+function toggleAllCheckboxes(flag) {
+    document.querySelectorAll('.checkbox').forEach(cb => cb.checked = flag);
+}
+function clearAllComments() {
+    document.querySelectorAll('.comment-input').forEach(tx => tx.value = '');
+}
+
+// Pixieローカル添削（既存ロジック）
+function doPixieAdvise() {
+    const input = document.getElementById('userBefore').value.trim();
+    const out = document.getElementById('pixieAfter');
+    const aiOut = document.getElementById('aiAfter');
+    const loading = document.getElementById('loading');
+    out.style.display = "none";
+    aiOut.style.display = "none";
+    out.innerText = "";
+    if (!input) { return; }
+    loading.style.display = "flex";
+    setTimeout(function(){
+        loading.style.display = "none";
+        let improved = "";
+        let dialog = "";
+        // （ここは既存ローカルパターン）
+        if (input.match(/総務|事務|業務全般|全般|全体/)) {
+            improved = "まずは先輩社員2人のサポートのもと、書類作成やデータ入力など基本業務から担当。慣れてきたら、給与・経理・備品管理など、それぞれの得意分野にチャレンジできる環境です。分からないことはすぐに相談できる雰囲気です。";
+            dialog = "【Pixieのヒアリング】\n・実際の役割分担やローテ説明もあると安心感アップ。";
+        } else if (input.match(/先輩|サポート|OJT/)) {
+            improved = input + "\n\n【Pixieコメント】\n・“具体的に何をどの順番で経験できるか”も一文入れると伝わります。";
+            dialog = "【Pixieのヒアリング】\n・サポート体制や質問できる雰囲気を盛り込んでみましょう。";
+        } else if (input.match(/お客様|納品|接客/)) {
+            improved = "最初は商品の納品や伝票処理、次第にお客様対応・受発注業務にもチャレンジできる環境です。";
+            dialog = "【Pixieのヒアリング】\n・業務の広がりや現場のサポートも入れると良いです。";
+        } else {
+            improved = input;
+            dialog = "【Pixieのヒアリング】\n・具体的な業務・職場環境をさらに記載できる部分はありませんか？";
+        }
+        out.innerText = improved + "\n\n" + dialog;
+        out.style.display = "block";
+    }, 1500);
+}
+
+// AIリアルタイム添削API
+function doAITensaku() {
+    const input = document.getElementById('userBefore').value.trim();
+    const aiOut = document.getElementById('aiAfter');
+    const pixieOut = document.getElementById('pixieAfter');
+    const loading = document.getElementById('loading');
+    aiOut.style.display = "none";
+    pixieOut.style.display = "none";
+    aiOut.innerText = "";
+    if (!input) { return; }
+    loading.style.display = "flex";
+    fetch('/tensaku', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: input })
+    })
+    .then(response => response.json())
+    .then(data => {
+        loading.style.display = "none";
+        aiOut.innerHTML = `<b>【AI添削結果】</b><br>${(data.result || '（添削結果なし）').replace(/\n/g, '<br>')}`;
+        aiOut.style.display = "block";
+    })
+    .catch(e => {
+        loading.style.display = "none";
+        aiOut.innerHTML = `<span style="color:#c33">AI連携エラー: ${e.message}</span>`;
+        aiOut.style.display = "block";
+    });
+}
+</script>
+</body>
+</html>
