@@ -56,50 +56,81 @@ body {
 .comment-cell { width: 220px; }
 .comment-input {
     width: 98%; min-height: 52px; padding: 7px 10px; border: 2px solid #e3f7cb; border-radius: 8px;
-    font-family: inherit; resize: vertical; font-size: 1rem;
-    overflow-y: auto;
-    box-sizing: border-box;
-    /* スクロール可・手動で伸縮可 */
+    font-family: inherit; resize: none; font-size: 1rem; overflow:hidden;
+    box-sizing: border-box; background: #fafafa;
 }
 .comment-input:focus {
     outline: none; border-color: #92d050; box-shadow: 0 0 7px #92d05044;
 }
 .sample-improvement { margin-top: 5px; }
-
-/* --- 追加: 例文（Before/After）カード型表示 --- */
-.examples-section {
-    margin-bottom: 40px;
+.before-after {
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 30px;
+    margin-bottom: 26px;
 }
-.example-pair-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 22px;
-    margin-bottom: 16px;
+.before-card, .after-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(180,220,160,0.12);
+    padding: 22px 24px 18px 24px;
+    display: flex; flex-direction: column;
+    min-height: 110px;
 }
-.example-box {
-    background: #f6fdf5;
-    border-radius: 12px;
-    border-left: 6px solid #92d050;
-    padding: 22px 16px 19px 18px;
-    min-height: 80px;
-    font-size: 1.02rem;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-    white-space: pre-wrap;
-    overflow-x: auto;
+.before-card {
+    background: #fff6f4; border-left: 7px solid #e67e22;
 }
-.example-box.before {
-    background: #fff6f4;
-    border-left: 6px solid #e67e22;
+.after-card {
+    background: #f3fcf1; border-left: 7px solid #27ae60;
 }
-.example-title {
-    font-weight: bold; font-size: 1.08rem; margin-bottom: 7px;
-    color: #297005;
+.before-card h4, .after-card h4 {
+    margin-bottom: 11px; font-weight: 700; font-size: 1.09rem; letter-spacing: .02em;
+}
+.before-card h4 { color: #e67e22;}
+.after-card h4 { color: #27ae60;}
+.before-example {
+    background: #ffe5d5; color: #993d00; border-radius: 8px; padding: 8px 14px; margin-bottom: 7px;
+    font-size: 1.03rem;
+    word-break: break-all;
+}
+.after-example {
+    background: #d5f8dc; color: #174e13; border-radius: 8px; padding: 8px 14px; margin-bottom: 7px;
+    font-size: 1.03rem;
+    word-break: break-all;
+}
+.pixie-tip {
+    color: #5e8f3c; font-size: .98rem; margin-top: 10px; margin-bottom: 0;
+}
+.pixieAfter-box {
+    min-height: 78px; background: #eafee6; padding: 12px; border-radius: 8px;
+    font-size: 1.01rem; color: #174e13; white-space: pre-line;
+}
+.btn-adv {
+    background: #92d050; color: #fff; border: none; border-radius: 7px; padding: 7px 21px;
+    font-size: 1rem; cursor: pointer; margin-top: 14px; align-self: flex-end; font-weight: 700;
+    transition: background 0.2s;
+}
+.btn-adv:hover { background: #7bc142; }
+.loading-typing {
+    margin-top: 8px;
+    color: #299900;
+    font-size: 1.08rem;
+    font-weight: bold;
+    letter-spacing: 1.2px;
+    display: flex; align-items: center;
+}
+.loading-dot {animation: blink 1s infinite;}
+@keyframes blink {
+    0% { opacity: 0.2;}
+    50% {opacity: 1;}
+    100% {opacity:0.2;}
 }
 @media (max-width: 900px) {
     .container { padding: 12px 2vw 36px 2vw; }
     .header { padding: 28px 5px 13px 5px; }
     .section { padding: 19px 4vw; }
-    .example-pair-row { grid-template-columns: 1fr; }
+    .before-after { grid-template-columns: 1fr; gap: 16px; }
+    .before-card, .after-card { padding: 18px 10px; }
 }
 </style>
 </head>
@@ -211,49 +242,31 @@ body {
         </table>
     </div>
 
-<!-- 既存レイアウト・CSS・ヘッダー等そのまま -->
-
-  <div class="section examples-section">
-        <h2><span class="section-number">2</span>AI添削例（例文サンプル）</h2>
-        <div class="example-pair-row">
-            <div class="example-box before">
-                <div class="example-title">Before（例文：事務職）</div>
-                書類作成や電話対応などの事務全般を担当してもらいます。
-            </div>
-            <div class="example-box">
-                <div class="example-title">After（添削例）</div>
-                書類作成・データ入力・電話や来客対応など、幅広い事務業務を担当していただきます。周囲と連携しながら、正確かつ丁寧に取り組める方を歓迎します。
-            </div>
-        </div>
-        <div class="example-pair-row">
-            <div class="example-box before">
-                <div class="example-title">Before（例文：工場）</div>
-                工場でパンの生地をライン作業で作成してもらいます。
-            </div>
-            <div class="example-box">
-                <div class="example-title">After（添削例）</div>
-                工場でパンの生地づくりを担当していただきます。ライン作業が中心ですが、分からないことは先輩が丁寧に指導しますので未経験でも安心です。
-            </div>
-        </div>
-        <div class="example-pair-row">
-            <div class="example-box before">
-                <div class="example-title">Before（例文：販売）</div>
-                店頭でのレジ業務、商品陳列、接客などをお願いします。
-            </div>
-            <div class="example-box">
-                <div class="example-title">After（添削例）</div>
-                店舗でのレジ業務・商品の品出し・接客応対をお任せします。明るく元気な対応ができる方歓迎。未経験からスタートした先輩も多数活躍中です。
-            </div>
-        </div>
-    </div>
-
-    <!-- 3. AI添削（ユーザー入力）セクション -->
+    <!-- AI文章添削：例文カード型（旧レイアウト風） -->
     <div class="section">
-      <h2><span class="section-number">3</span>AI文章添削</h2>
+      <h2><span class="section-number">2</span>AI文章添削</h2>
+      <div class="before-after">
+        <div class="before-card">
+          <h4>Before（例文：事務職）</h4>
+          <div class="before-example">書類作成や電話対応などの事務全般を担当してもらいます。</div>
+          <h4>Before（例文：工場）</h4>
+          <div class="before-example">工場でパンの生地をライン作業で作成してもらいます。</div>
+          <h4>Before（例文：販売）</h4>
+          <div class="before-example">店頭でのレジ業務、商品陳列、接客などをお願いします。</div>
+        </div>
+        <div class="after-card">
+          <h4>After（添削例）</h4>
+          <div class="after-example">書類作成・データ入力・電話や来客対応など、幅広い事務業務を担当していただきます。周囲と連携しながら、正確かつ丁寧に取り組める方を歓迎します。</div>
+          <div class="after-example">工場でパンの生地づくりを担当していただきます。ライン作業が中心ですが、分からないことは先輩が丁寧に指導しますので未経験でも安心です。</div>
+          <div class="after-example">店舗でのレジ業務・商品の品出し・接客応対をお任せします。明るく元気な対応ができる方歓迎。未経験からスタートした先輩も多数活躍中です。</div>
+        </div>
+      </div>
+
+      <!-- ユーザー独自の添削入力欄 -->
       <div style="display:flex; gap:32px; flex-wrap:wrap;">
         <div style="flex:1; min-width:340px;">
           <strong>Before（御社の文面）</strong>
-          <textarea id="userBefore" class="comment-input" placeholder="例）特長 アットホームな雰囲気で安心して働けます" rows="6" oninput="autoExpand(this)"></textarea>
+          <textarea id="userBefore" class="comment-input" placeholder="例）特長 アットホームな雰囲気で安心して働けます" rows="5" style="resize: vertical;"></textarea>
           <div style="color:#7bc142;font-size:13px;">
             ※冒頭に「特長」「内容」「補足」「特記」のいずれかを入力してください。<br>
             例：特長 会社のPR文（90文字以内）<br>
@@ -271,14 +284,23 @@ body {
       </div>
     </div>
 </div>
-
 <script>
-// テキストエリア自動拡大
-function autoExpand(field) {
-  field.style.height = 'inherit';
-  field.style.height = (field.scrollHeight+2) + "px";
+// チェックリスト関連
+function toggleAllCheckboxes(checked) {
+    document.querySelectorAll('.checkbox').forEach(cb => cb.checked = checked);
 }
+function clearAllComments() {
+    document.querySelectorAll('.comment-input').forEach(ci => ci.value = "");
+}
+// コメント欄自動伸縮
+document.addEventListener('input', function(e){
+    if(e.target.classList.contains('comment-input')){
+        e.target.style.height = "auto";
+        e.target.style.height = (e.target.scrollHeight) + "px";
+    }
+});
 
+// AI添削処理（既存のまま／API部分は適宜修正）
 function doAITensaku() {
     const input = document.getElementById('userBefore').value.trim();
     const aiOut = document.getElementById('aiAfter');
@@ -321,6 +343,5 @@ function doAITensaku() {
     });
 }
 </script>
-
 </body>
 </html>
