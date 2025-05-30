@@ -56,26 +56,48 @@ body {
 .comment-cell { width: 220px; }
 .comment-input {
     width: 98%; min-height: 52px; padding: 7px 10px; border: 2px solid #e3f7cb; border-radius: 8px;
-    font-family: inherit; resize: vertical; font-size: 1rem;
+    font-family: inherit; resize: none; font-size: 1rem; overflow:hidden;
+    box-sizing: border-box; background: #fafafa;
 }
 .comment-input:focus {
     outline: none; border-color: #92d050; box-shadow: 0 0 7px #92d05044;
 }
 .sample-improvement { margin-top: 5px; }
-.before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
-.before, .after {
-    padding: 19px 14px 20px 14px; border-radius: 12px; position: relative; min-height: 110px;
+.before-after {
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 30px;
+    margin-bottom: 26px;
 }
-.before {
-    background: #fff6f4; border-left: 5px solid #e67e22;
+.before-card, .after-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(180,220,160,0.12);
+    padding: 22px 24px 18px 24px;
+    display: flex; flex-direction: column;
+    min-height: 110px;
 }
-.after {
-    background: #f3fcf1; border-left: 5px solid #27ae60;
-    display: flex; flex-direction: column; justify-content: flex-start;
+.before-card {
+    background: #fff6f4; border-left: 7px solid #e67e22;
 }
-.before h4, .after h4 { margin-bottom: 9px; font-weight: 700; font-size: 1.04rem; }
-.before h4 { color: #e67e22;}
-.after h4 { color: #27ae60;}
+.after-card {
+    background: #f3fcf1; border-left: 7px solid #27ae60;
+}
+.before-card h4, .after-card h4 {
+    margin-bottom: 11px; font-weight: 700; font-size: 1.09rem; letter-spacing: .02em;
+}
+.before-card h4 { color: #e67e22;}
+.after-card h4 { color: #27ae60;}
+.before-example {
+    background: #ffe5d5; color: #993d00; border-radius: 8px; padding: 8px 14px; margin-bottom: 7px;
+    font-size: 1.03rem;
+    word-break: break-all;
+}
+.after-example {
+    background: #d5f8dc; color: #174e13; border-radius: 8px; padding: 8px 14px; margin-bottom: 7px;
+    font-size: 1.03rem;
+    word-break: break-all;
+}
 .pixie-tip {
     color: #5e8f3c; font-size: .98rem; margin-top: 10px; margin-bottom: 0;
 }
@@ -108,40 +130,8 @@ body {
     .header { padding: 28px 5px 13px 5px; }
     .section { padding: 19px 4vw; }
     .before-after { grid-template-columns: 1fr; gap: 16px; }
+    .before-card, .after-card { padding: 18px 10px; }
 }
-/* サンプル例文用グリッド */
-.sample-pair-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 28px;
-  margin-bottom: 8px;
-  background: #eafbe6;
-  border-radius: 16px;
-  padding: 18px 10px 18px 18px;
-}
-.sample-before, .sample-after { display: flex; flex-direction: column; gap: 20px; }
-.sample-before strong, .sample-after strong { margin-bottom: 2px; }
-.sample-before-box {
-  background: #fff4ee;
-  border-left: 5px solid #ff9800;
-  padding: 11px 13px;
-  border-radius: 10px;
-  margin-bottom: 7px;
-  font-size: 1.02rem;
-}
-.sample-after-box {
-  background: #ebfaed;
-  border-left: 5px solid #27ae60;
-  padding: 11px 13px;
-  border-radius: 10px;
-  margin-bottom: 7px;
-  font-size: 1.02rem;
-}
-@media (max-width: 900px) {
-  .sample-pair-grid { grid-template-columns: 1fr; }
-}
-
-
 </style>
 </head>
 <body>
@@ -252,80 +242,78 @@ body {
         </table>
     </div>
 
- <tr><td>1</td>
-                    <td>求人票の記載内容は「誰に向けて」「どんな仕事か」が具体的か</td>
-                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
-                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
-                <!-- ...省略... -->
-                <tr><td>20</td>
-                    <td>法令遵守や安全衛生（労基・同一労働同一賃金等）への配慮が記載されている</td>
-                    <td class="checkbox-cell"><input type="checkbox" class="checkbox"></td>
-                    <td class="comment-cell"><textarea class="comment-input" placeholder="コメントを入力してください"></textarea></td></tr>
-            </tbody>
-        </table>
-    </div>
-
-<!-- AI文章添削サンプル例文エリア -->
-<div class="section">
-  <h2><span class="section-number">2</span>AI文章添削</h2>
-  <div class="sample-pair-grid">
-    <div class="sample-before">
-      <strong>Before（例文：事務職）</strong>
-      <div class="sample-before-box">書類作成や電話対応などの事務全般を担当してもらいます。</div>
-      <strong>Before（例文：工場）</strong>
-      <div class="sample-before-box">工場でパンの生地をライン作業で作成してもらいます。</div>
-      <strong>Before（例文：販売）</strong>
-      <div class="sample-before-box">店頭でのレジ業務、商品陳列、接客などをお願いします。</div>
-    </div>
-    <div class="sample-after">
-      <strong>After（添削例）</strong>
-      <div class="sample-after-box">書類作成・データ入力・電話や来客対応など、幅広い事務業務を担当していただきます。周囲と連携しながら、正確かつ丁寧に取り組める方を歓迎します。</div>
-      <div class="sample-after-box">工場でパンの生地づくりを担当していただきます。ライン作業が中心ですが、分からないことは先輩が丁寧に指導しますので未経験でも安心です。</div>
-      <div class="sample-after-box">店舗でのレジ業務・商品の品出し・接客応対をお任せします。明るく元気な対応ができる方歓迎。未経験からスタートした先輩も多数活躍中です。</div>
-    </div>
-  </div>
-  <!-- AI添削フォームはこの下に続く -->
-  <div style="display:flex; gap:32px; flex-wrap:wrap; margin-top:36px;">
-    <div style="flex:1; min-width:340px;">
-      <strong>Before（御社の文面）</strong>
-      <textarea id="userBefore" class="comment-input" placeholder="例）特長 アットホームな雰囲気で安心して働けます" rows="5"></textarea>
-      <div style="color:#7bc142;font-size:13px;">
-        ※冒頭に「特長」「内容」「補足」「特記」のいずれかを入力してください。<br>
-        例：特長 会社のPR文（90文字以内）<br>
-        例：内容 仕事内容の説明（300文字以内）
+    <!-- AI文章添削：例文カード型（旧レイアウト風） -->
+    <div class="section">
+      <h2><span class="section-number">2</span>AI文章添削</h2>
+      <div class="before-after">
+        <div class="before-card">
+          <h4>Before（例文：事務職）</h4>
+          <div class="before-example">書類作成や電話対応などの事務全般を担当してもらいます。</div>
+          <h4>Before（例文：工場）</h4>
+          <div class="before-example">工場でパンの生地をライン作業で作成してもらいます。</div>
+          <h4>Before（例文：販売）</h4>
+          <div class="before-example">店頭でのレジ業務、商品陳列、接客などをお願いします。</div>
+        </div>
+        <div class="after-card">
+          <h4>After（添削例）</h4>
+          <div class="after-example">書類作成・データ入力・電話や来客対応など、幅広い事務業務を担当していただきます。周囲と連携しながら、正確かつ丁寧に取り組める方を歓迎します。</div>
+          <div class="after-example">工場でパンの生地づくりを担当していただきます。ライン作業が中心ですが、分からないことは先輩が丁寧に指導しますので未経験でも安心です。</div>
+          <div class="after-example">店舗でのレジ業務・商品の品出し・接客応対をお任せします。明るく元気な対応ができる方歓迎。未経験からスタートした先輩も多数活躍中です。</div>
+        </div>
       </div>
-      <button class="btn-adv" onclick="doAITensaku()">AIで添削・自動補完</button>
-    </div>
-    <div style="flex:1; min-width:340px;">
-      <strong>After（AI添削結果・フィードバック）</strong>
-      <div id="aiAfter" class="pixieAfter-box" style="min-height:80px;background:#ebfaed; border-radius:8px; padding:16px; margin:10px 0; display:none"></div>
-      <div id="advice-box" class="pixieAfter-box" style="background:#e2f7e5; color:#207030; font-size:0.97rem; display:none"></div>
-      <div id="char-count" style="font-size:13px;color:#6bb65b;"></div>
-      <div id="loading" class="loading-typing" style="display:none;">添削中です<span class="loading-dot">...</span></div>
-    </div>
-  </div>
-</div>
-</div>
 
+      <!-- ユーザー独自の添削入力欄 -->
+      <div style="display:flex; gap:32px; flex-wrap:wrap;">
+        <div style="flex:1; min-width:340px;">
+          <strong>Before（御社の文面）</strong>
+          <textarea id="userBefore" class="comment-input" placeholder="例）特長 アットホームな雰囲気で安心して働けます" rows="5" style="resize: vertical;"></textarea>
+          <div style="color:#7bc142;font-size:13px;">
+            ※冒頭に「特長」「内容」「補足」「特記」のいずれかを入力してください。<br>
+            例：特長 会社のPR文（90文字以内）<br>
+            例：内容 仕事内容の説明（300文字以内）
+          </div>
+          <button class="btn-adv" onclick="doAITensaku()">AIで添削・自動補完</button>
+        </div>
+        <div style="flex:1; min-width:340px;">
+          <strong>After（AI添削結果・フィードバック）</strong>
+          <div id="aiAfter" class="pixieAfter-box" style="min-height:80px;background:#ebfaed; border-radius:8px; padding:16px; margin:10px 0; display:none"></div>
+          <div id="advice-box" class="pixieAfter-box" style="background:#e2f7e5; color:#207030; font-size:0.97rem; display:none"></div>
+          <div id="char-count" style="font-size:13px;color:#6bb65b;"></div>
+          <div id="loading" class="loading-typing" style="display:none;">添削中です<span class="loading-dot">...</span></div>
+        </div>
+      </div>
+    </div>
+</div>
 <script>
-function toggleAllCheckboxes(flag) {
-  document.querySelectorAll('.checkbox').forEach(cb => cb.checked = flag);
+// チェックリスト関連
+function toggleAllCheckboxes(checked) {
+    document.querySelectorAll('.checkbox').forEach(cb => cb.checked = checked);
 }
 function clearAllComments() {
-  document.querySelectorAll('.comment-input').forEach(el => { if(el.tagName==='TEXTAREA') el.value=''; });
+    document.querySelectorAll('.comment-input').forEach(ci => ci.value = "");
 }
+// コメント欄自動伸縮
+document.addEventListener('input', function(e){
+    if(e.target.classList.contains('comment-input')){
+        e.target.style.height = "auto";
+        e.target.style.height = (e.target.scrollHeight) + "px";
+    }
+});
+
+// AI添削処理（既存のまま／API部分は適宜修正）
 function doAITensaku() {
     const input = document.getElementById('userBefore').value.trim();
     const aiOut = document.getElementById('aiAfter');
     const adviceOut = document.getElementById('advice-box');
     const loading = document.getElementById('loading');
     aiOut.style.display = "none";
-    adviceOut.style.display = "block";
+    adviceOut.style.display = "none";
     aiOut.innerText = "";
-    adviceOut.innerHTML = "【アドバイス】<br>（AI実行後にここへ表示されます）";
+    adviceOut.innerText = "";
     document.getElementById('char-count').innerText = "";
     if (!input) { return; }
     loading.style.display = "flex";
+    // 最大文字数設定
     let maxLen = 300, type = "内容";
     if (input.startsWith('特長')) { maxLen = 90; type = "特長"; }
     else if (input.startsWith('内容')) { maxLen = 300; type = "内容"; }
@@ -343,16 +331,15 @@ function doAITensaku() {
         aiOut.style.display = "block";
         document.getElementById('char-count').innerHTML =
             `<b>（${type}）</b>　AI添削後：<b>${data.length}</b>文字 ／ 最大${maxLen}文字`;
-        let adviceVal = (data.advice && data.advice !== "" && data.advice !== "(なし)" && data.advice !== "なし") ? data.advice : "なし";
-        adviceOut.innerHTML = `<b>【アドバイス】</b><br>${(adviceVal || 'なし').replace(/\n/g, '<br>')}`;
-        adviceOut.style.display = "block";
+        if(data.advice && data.advice !== "なし") {
+          adviceOut.innerHTML = `<b>【アドバイス】</b><br>${(data.advice || '').replace(/\n/g, '<br>')}`;
+          adviceOut.style.display = "block";
+        }
     })
     .catch(e => {
         loading.style.display = "none";
         aiOut.innerHTML = `<span style="color:#c33">AI連携エラー: ${e.message}</span>`;
         aiOut.style.display = "block";
-        adviceOut.innerHTML = `<b>【アドバイス】</b><br>（AI通信エラー）`;
-        adviceOut.style.display = "block";
     });
 }
 </script>
