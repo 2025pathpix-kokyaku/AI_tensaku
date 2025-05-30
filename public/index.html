@@ -109,6 +109,39 @@ body {
     .section { padding: 19px 4vw; }
     .before-after { grid-template-columns: 1fr; gap: 16px; }
 }
+/* サンプル例文用グリッド */
+.sample-pair-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-bottom: 8px;
+  background: #eafbe6;
+  border-radius: 16px;
+  padding: 18px 10px 18px 18px;
+}
+.sample-before, .sample-after { display: flex; flex-direction: column; gap: 20px; }
+.sample-before strong, .sample-after strong { margin-bottom: 2px; }
+.sample-before-box {
+  background: #fff4ee;
+  border-left: 5px solid #ff9800;
+  padding: 11px 13px;
+  border-radius: 10px;
+  margin-bottom: 7px;
+  font-size: 1.02rem;
+}
+.sample-after-box {
+  background: #ebfaed;
+  border-left: 5px solid #27ae60;
+  padding: 11px 13px;
+  border-radius: 10px;
+  margin-bottom: 7px;
+  font-size: 1.02rem;
+}
+@media (max-width: 900px) {
+  .sample-pair-grid { grid-template-columns: 1fr; }
+}
+
+
 </style>
 </head>
 <body>
@@ -232,62 +265,46 @@ body {
         </table>
     </div>
 
-    <div class="section">
-      <h2><span class="section-number">2</span>AI文章添削</h2>
-      <!-- サンプル例文 -->
-      <div style="margin-bottom: 18px;">
-        <div class="before-after">
-          <div class="before">
-            <h4>Before（例文：事務職）</h4>
-            書類作成や電話対応などの事務全般を担当してもらいます。
-          </div>
-          <div class="after">
-            <h4>After（添削例）</h4>
-            書類作成・データ入力・電話や来客対応など、幅広い事務業務を担当していただきます。周囲と連携しながら、正確かつ丁寧に取り組める方を歓迎します。
-          </div>
-        </div>
-        <div class="before-after">
-          <div class="before">
-            <h4>Before（例文：工場）</h4>
-            工場でパンの生地をライン作業で作成してもらいます。
-          </div>
-          <div class="after">
-            <h4>After（添削例）</h4>
-            工場でパンの生地づくりを担当していただきます。ライン作業が中心ですが、分からないことは先輩が丁寧に指導しますので未経験でも安心です。
-          </div>
-        </div>
-        <div class="before-after">
-          <div class="before">
-            <h4>Before（例文：販売）</h4>
-            店頭でのレジ業務、商品陳列、接客などをお願いします。
-          </div>
-          <div class="after">
-            <h4>After（添削例）</h4>
-            店舗でのレジ業務・商品の品出し・接客応対をお任せします。明るく元気な対応ができる方歓迎。未経験からスタートした先輩も多数活躍中です。
-          </div>
-        </div>
-      </div>
-      <!-- AI添削 入力フォーム -->
-      <div style="display:flex; gap:32px; flex-wrap:wrap;">
-        <div style="flex:1; min-width:340px;">
-          <strong>Before（御社の文面）</strong>
-          <textarea id="userBefore" class="comment-input" placeholder="例）特長 アットホームな雰囲気で安心して働けます" rows="5"></textarea>
-          <div style="color:#7bc142;font-size:13px;">
-            ※冒頭に「特長」「内容」「補足」「特記」のいずれかを入力してください。<br>
-            例：特長 会社のPR文（90文字以内）<br>
-            例：内容 仕事内容の説明（300文字以内）
-          </div>
-          <button class="btn-adv" onclick="doAITensaku()">AIで添削・自動補完</button>
-        </div>
-        <div style="flex:1; min-width:340px;">
-          <strong>After（AI添削結果・フィードバック）</strong>
-          <div id="aiAfter" class="pixieAfter-box" style="min-height:80px;background:#ebfaed; border-radius:8px; padding:16px; margin:10px 0; display:none"></div>
-          <div id="advice-box" class="pixieAfter-box" style="background:#e2f7e5; color:#207030; font-size:0.97rem; display:block">【アドバイス】<br>（AI実行後にここへ表示されます）</div>
-          <div id="char-count" style="font-size:13px;color:#6bb65b;"></div>
-          <div id="loading" class="loading-typing" style="display:none;">添削中です<span class="loading-dot">...</span></div>
-        </div>
-      </div>
+<!-- AI文章添削サンプル例文エリア -->
+<div class="section">
+  <h2><span class="section-number">2</span>AI文章添削</h2>
+  <div class="sample-pair-grid">
+    <div class="sample-before">
+      <strong>Before（例文：事務職）</strong>
+      <div class="sample-before-box">書類作成や電話対応などの事務全般を担当してもらいます。</div>
+      <strong>Before（例文：工場）</strong>
+      <div class="sample-before-box">工場でパンの生地をライン作業で作成してもらいます。</div>
+      <strong>Before（例文：販売）</strong>
+      <div class="sample-before-box">店頭でのレジ業務、商品陳列、接客などをお願いします。</div>
     </div>
+    <div class="sample-after">
+      <strong>After（添削例）</strong>
+      <div class="sample-after-box">書類作成・データ入力・電話や来客対応など、幅広い事務業務を担当していただきます。周囲と連携しながら、正確かつ丁寧に取り組める方を歓迎します。</div>
+      <div class="sample-after-box">工場でパンの生地づくりを担当していただきます。ライン作業が中心ですが、分からないことは先輩が丁寧に指導しますので未経験でも安心です。</div>
+      <div class="sample-after-box">店舗でのレジ業務・商品の品出し・接客応対をお任せします。明るく元気な対応ができる方歓迎。未経験からスタートした先輩も多数活躍中です。</div>
+    </div>
+  </div>
+  <!-- AI添削フォームはこの下に続く -->
+  <div style="display:flex; gap:32px; flex-wrap:wrap; margin-top:36px;">
+    <div style="flex:1; min-width:340px;">
+      <strong>Before（御社の文面）</strong>
+      <textarea id="userBefore" class="comment-input" placeholder="例）特長 アットホームな雰囲気で安心して働けます" rows="5"></textarea>
+      <div style="color:#7bc142;font-size:13px;">
+        ※冒頭に「特長」「内容」「補足」「特記」のいずれかを入力してください。<br>
+        例：特長 会社のPR文（90文字以内）<br>
+        例：内容 仕事内容の説明（300文字以内）
+      </div>
+      <button class="btn-adv" onclick="doAITensaku()">AIで添削・自動補完</button>
+    </div>
+    <div style="flex:1; min-width:340px;">
+      <strong>After（AI添削結果・フィードバック）</strong>
+      <div id="aiAfter" class="pixieAfter-box" style="min-height:80px;background:#ebfaed; border-radius:8px; padding:16px; margin:10px 0; display:none"></div>
+      <div id="advice-box" class="pixieAfter-box" style="background:#e2f7e5; color:#207030; font-size:0.97rem; display:none"></div>
+      <div id="char-count" style="font-size:13px;color:#6bb65b;"></div>
+      <div id="loading" class="loading-typing" style="display:none;">添削中です<span class="loading-dot">...</span></div>
+    </div>
+  </div>
+</div>
 </div>
 
 <script>
