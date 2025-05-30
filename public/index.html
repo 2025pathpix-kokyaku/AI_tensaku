@@ -30,110 +30,114 @@ body {
     align-items: center; justify-content: center; margin-right: 15px; font-weight: 700; font-size: 1.14rem;
 }
 .checklist-controls {
-    margin-bottom: 12px; display: flex; flex-wrap: wrap; gap: 16px;
+    margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 16px;
 }
 .checklist-controls button {
     background: #92d050; color: #fff; border: none; border-radius: 7px; padding: 8px 18px;
     font-size: 1rem; cursor: pointer; margin-bottom: 7px; transition: background 0.2s;
 }
 .checklist-controls button:hover { background: #7bc142; }
-.checklist-table-wrap {
-    background: #f7faf8;
-    border-radius: 15px;
-    padding: 22px 9px 17px 9px;
-    margin-bottom: 18px;
-    box-shadow: 0 4px 24px rgba(180,220,160,0.11);
-    overflow-x: auto;
-}
 .checklist-table {
-    width: 100%; border-collapse: collapse; background: #fff;
-    margin: 0 auto;
-    font-size: 1.05rem;
+    width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; border-radius: 10px;
+    overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06);
 }
 .checklist-table th {
     background: linear-gradient(135deg, #92d050 80%, #7bc142 100%);
-    color: #fff; padding: 12px 7px; text-align: left; font-weight: 600;
-    font-size: 1.01rem;
+    color: #fff; padding: 13px 7px; text-align: left; font-weight: 600; font-size: 1rem;
+}
+.checklist-table th.check-header {
+    width: 90px;          /* ←幅を広げて折り返し防止 */
+    font-size: 1rem;      /* ←フォントサイズもやや小さく統一 */
+    text-align: center;   /* ←中央揃え */
+    white-space: nowrap;  /* ←折り返し禁止 */
+    letter-spacing: 0.03em;
 }
 .checklist-table td {
-    padding: 10px 7px; border-bottom: 1px solid #eef7e8; vertical-align: top;
+    padding: 11px 7px; border-bottom: 1px solid #eef7e8; vertical-align: top;
 }
 .checklist-table tr:last-child td { border-bottom: none; }
-.checkbox-cell { text-align: center; width: 58px; }
+.checkbox-cell { text-align: center; width: 70px; }
 .checkbox {
-    width: 20px; height: 20px; accent-color: #92d050; transform: scale(1.07);
+    width: 22px; height: 22px; accent-color: #92d050; transform: scale(1.12);
 }
-.comment-cell { width: 210px; }
+.comment-cell { width: 220px; }
 .comment-input {
-    width: 96%; min-height: 38px; padding: 7px 10px; border: 2px solid #e3f7cb; border-radius: 8px;
-    font-family: inherit; resize: vertical; font-size: 1rem; background: #fafafa;
-    box-sizing: border-box;
+    width: 98%; min-height: 52px; padding: 7px 10px; border: 2px solid #e3f7cb; border-radius: 8px;
+    font-family: inherit; resize: none; font-size: 1rem; overflow:hidden;
+    box-sizing: border-box; background: #fafafa;
 }
 .comment-input:focus {
     outline: none; border-color: #92d050; box-shadow: 0 0 7px #92d05044;
 }
+.sample-improvement { margin-top: 5px; }
+.before-after {
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 30px;
+    margin-bottom: 26px;
+}
+.before-card, .after-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(180,220,160,0.12);
+    padding: 22px 24px 18px 24px;
+    display: flex; flex-direction: column;
+    min-height: 110px;
+}
+.before-card {
+    background: #fff6f4; border-left: 7px solid #e67e22;
+}
+.after-card {
+    background: #f3fcf1; border-left: 7px solid #27ae60;
+}
+.before-card h4, .after-card h4 {
+    margin-bottom: 11px; font-weight: 700; font-size: 1.09rem; letter-spacing: .02em;
+}
+.before-card h4 { color: #e67e22;}
+.after-card h4 { color: #27ae60;}
+.before-example {
+    background: #ffe5d5; color: #993d00; border-radius: 8px; padding: 8px 14px; margin-bottom: 7px;
+    font-size: 1.03rem;
+    word-break: break-all;
+}
+.after-example {
+    background: #d5f8dc; color: #174e13; border-radius: 8px; padding: 8px 14px; margin-bottom: 7px;
+    font-size: 1.03rem;
+    word-break: break-all;
+}
+.pixie-tip {
+    color: #5e8f3c; font-size: .98rem; margin-top: 10px; margin-bottom: 0;
+}
+.pixieAfter-box {
+    min-height: 78px; background: #eafee6; padding: 12px; border-radius: 8px;
+    font-size: 1.01rem; color: #174e13; white-space: pre-line;
+}
+.btn-adv {
+    background: #92d050; color: #fff; border: none; border-radius: 7px; padding: 7px 21px;
+    font-size: 1rem; cursor: pointer; margin-top: 14px; align-self: flex-end; font-weight: 700;
+    transition: background 0.2s;
+}
+.btn-adv:hover { background: #7bc142; }
+.loading-typing {
+    margin-top: 8px;
+    color: #299900;
+    font-size: 1.08rem;
+    font-weight: bold;
+    letter-spacing: 1.2px;
+    display: flex; align-items: center;
+}
+.loading-dot {animation: blink 1s infinite;}
+@keyframes blink {
+    0% { opacity: 0.2;}
+    50% {opacity: 1;}
+    100% {opacity:0.2;}
+}
 @media (max-width: 900px) {
     .container { padding: 12px 2vw 36px 2vw; }
     .header { padding: 28px 5px 13px 5px; }
-    .section { padding: 17px 3vw; }
-    .checklist-table th, .checklist-table td { font-size: 0.99rem; }
-    .checklist-table-wrap { padding: 10px 2px 10px 2px; }
-}
-
-/* AI添削例レイアウト */
-.before-after-ex {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 36px;
-    background: #f7faf8;
-    border-radius: 15px;
-    padding: 36px 18px 30px 18px;
-    margin-bottom: 32px;
-    align-items: flex-start;
-}
-.before-block, .after-block {
-    display: flex;
-    flex-direction: column;
-}
-.before-block h3, .after-block h3 {
-    font-size: 1.09rem;
-    font-weight: bold;
-    margin-bottom: 16px;
-}
-.before-block h3 { color: #d96c0c; }
-.after-block h3 { color: #23944d; }
-.before-label {
-    color: #d96c0c;
-    font-weight: bold;
-    margin-top: 8px;
-    margin-bottom: 4px;
-    font-size: 1.05rem;
-}
-.after-label {
-    color: #23944d;
-    font-weight: bold;
-    margin-top: 8px;
-    margin-bottom: 4px;
-    font-size: 1.05rem;
-}
-.before-text {
-    background: #fff8f2;
-    border-radius: 9px;
-    padding: 12px 16px;
-    margin-bottom: 10px;
-    font-size: 1.06rem;
-    color: #90420e;
-}
-.after-text {
-    background: #ebfaed;
-    border-radius: 9px;
-    padding: 12px 16px;
-    margin-bottom: 10px;
-    font-size: 1.06rem;
-    color: #185a27;
-}
-@media (max-width: 900px) {
-    .before-after-ex { grid-template-columns: 1fr; gap: 18px; }
+    .section { padding: 19px 4vw; }
+    .before-after { grid-template-columns: 1fr; gap: 16px; }
+    .before-card, .after-card { padding: 18px 10px; }
 }
 </style>
 </head>
@@ -151,13 +155,12 @@ body {
             <button onclick="toggleAllCheckboxes(false)">全て解除</button>
             <button onclick="clearAllComments()">全コメント欄クリア</button>
         </div>
-        <div class="checklist-table-wrap">
         <table class="checklist-table" id="checklist-table">
             <thead>
                 <tr>
                     <th>No</th>
                     <th>チェック項目</th>
-                    <th>チェック</th>
+                    <th class="check-header">チェック</th>
                     <th>コメント記入欄</th>
                 </tr>
             </thead>
