@@ -1,20 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { Configuration, OpenAIApi } = require('openai');
+const { OpenAI } = require('openai'); // ← { OpenAI } のみに修正
 
 const app = express();
-const port = process.env.PORT || 10000; // Render用に10000対応
+const port = process.env.PORT || 10000;
 app.use(cors());
 app.use(bodyParser.json());
 
-// OpenAI設定（APIキーはRenderの環境変数OPENAI_API_KEYで設定）
-const OpenAI = require('openai');
+// OpenAI設定
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
-const openai = new OpenAIApi(configuration);
 
 // プロンプト生成関数
 function buildPrompt(userText, maxLen, type) {
@@ -65,13 +62,13 @@ app.post('/tensaku', async (req, res) => {
     const prompt = buildPrompt(text, maxLen, type);
 
     // OpenAIリクエスト
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [{ role: "user", content: prompt }],
       max_tokens: 800,
       temperature: 0.3,
     });
-    const aiText = completion.data.choices[0].message.content;
+    const aiText = completion.choices[0].message.content;
 
     // 添削本文・アドバイス分割
     const mainMatch = aiText.match(/【添削本文】([\s\S]*?)【アドバイス】([\s\S]*)/);
