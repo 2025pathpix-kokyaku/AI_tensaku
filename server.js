@@ -1,8 +1,10 @@
+// server.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { Configuration, OpenAIApi } = require('openai');
 require('dotenv').config();
+
+const { OpenAI } = require('openai');
 
 const app = express();
 const port = process.env.PORT || 10000;
@@ -11,9 +13,18 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// ======= 高卒求人票用 SYSTEM PROMPT =======
-const SYSTEM_PROMPT = `
-あなたは「高卒求人票 作成チェックリスト ＆ リアルタイム添削アドバイス」の日本語添削AIです。
+// OpenAI初期化
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+
+// AI添削エンドポイント
+app.post('/tensaku', async (req, res) => {
+  const { text, maxLen } = req.body;
+
+  // 厳守ルール・プロンプト組込
+  const systemPrompt = `
+あなたは「高卒求人票のAI添削アドバイザー」です。以下の【厳守ルール】に必ず従い、指示通りに添削してください。
 
 【厳守ルール】
 1. 入力文をそのまま返すのは禁止。必ず「高校新卒の生徒・保護者にもわかりやすい、具体的な例や表現」を付加して、内容をリライトしてください。
@@ -29,63 +40,46 @@ const SYSTEM_PROMPT = `
 （添削済み文）
 【アドバイス】
 （改善点または「なし」）
+
+■「特長」の場合は90文字以内、「内容」「補足」「特記」は300文字以内を必ず厳守し、自然な日本語で分かりやすく端的にまとめてください。
 `;
 
-const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY
-});
-const openai = new OpenAIApi(configuration);
+  try {
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o", // GPT-4のみ
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: text }
+      ],
+      max_tokens: 512,
+      temperature: 0.6
+    });
 
-app.post('/tensaku', async (req, res) => {
-    const { text, maxLen } = req.body;
-    try {
-        // どのタイプかに応じて最大文字数指定
-        let type = "内容";
-        if (text.startsWith('特長')) type = "特長";
-        else if (text.startsWith('内容')) type = "内容";
-        else if (text.startsWith('補足')) type = "補足";
-        else if (text.startsWith('特記')) type = "特記";
+    let response = completion.choices[0]?.message?.content || "";
+    let result = "", advice = "";
 
-        // プロンプト組み立て
-        const userPrompt = `
-【入力文】${text}
-※「${type}」の場合は最大${type === '特長' ? 90 : 300}文字以内でまとめてください。
-        `;
-
-        const completion = await openai.createChatCompletion({
-            model: "gpt-3.5-turbo",
-            messages: [
-                { role: "system", content: SYSTEM_PROMPT },
-                { role: "user", content: userPrompt }
-            ],
-            max_tokens: 600,
-            temperature: 0.6
-        });
-
-        let result = "";
-        let advice = "";
-        let content = completion.data.choices[0].message.content || "";
-
-        // 結果をパース
-        const aiMatch = content.match(/【AI添削結果】([\s\S]*?)【アドバイス】([\s\S]*)/);
-        if (aiMatch) {
-            result = aiMatch[1].trim();
-            advice = aiMatch[2].trim();
-        } else {
-            result = content.trim();
-            advice = "なし";
-        }
-
-        res.json({
-            result,
-            advice: advice || "なし",
-            length: result.length
-        });
-    } catch (err) {
-        res.status(500).json({ result: '', advice: 'エラー', length: 0, error: err.message });
+    // "【AI添削結果】"と"【アドバイス】"で切り出し
+    const aiMatch = response.match(/【AI添削結果】([\s\S]*?)【アドバイス】([\s\S]*)/);
+    if (aiMatch) {
+      result = aiMatch[1].trim();
+      advice = aiMatch[2].trim();
+    } else {
+      // フォーマット崩れ時の緊急措置
+      result = response.trim();
+      advice = "なし";
     }
+
+    res.json({
+      result,
+      advice,
+      length: result.length
+    });
+  } catch (err) {
+    res.status(500).json({ result: '', advice: 'エラー', length: 0, error: err.message });
+  }
 });
 
+// サーバー起動
 app.listen(port, () => {
-    console.log(`AI添削サーバー起動: http://localhost:${port}/`);
+  console.log(`AI添削サーバー起動: http://localhost:${port}/`);
 });
