@@ -29,69 +29,111 @@ body {
     color: #fff; width: 38px; height: 38px; border-radius: 50%; display: flex;
     align-items: center; justify-content: center; margin-right: 15px; font-weight: 700; font-size: 1.14rem;
 }
-.example-flex {
-  display: flex;
-  gap: 36px;
-  background: none;
-  border-radius: 0;
-  padding: 0 8px 18px 8px;
-  margin-bottom: 24px;
+.checklist-controls {
+    margin-bottom: 12px; display: flex; flex-wrap: wrap; gap: 16px;
 }
-.example-flex > div { flex: 1 1 0; }
-.ex-label {
-  font-weight: 700;
-  font-size: 1.08rem;
-  color: #e67e22;
-  margin-top: 12px;
-  margin-bottom: 6px;
-  letter-spacing: 0.04em;
+.checklist-controls button {
+    background: #92d050; color: #fff; border: none; border-radius: 7px; padding: 8px 18px;
+    font-size: 1rem; cursor: pointer; margin-bottom: 7px; transition: background 0.2s;
 }
-.ex-label.after {
-  color: #27ae60;
-  margin-top: 0;
+.checklist-controls button:hover { background: #7bc142; }
+.checklist-table-wrap {
+    background: #f7faf8;
+    border-radius: 15px;
+    padding: 22px 9px 17px 9px;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 24px rgba(180,220,160,0.11);
+    overflow-x: auto;
 }
-.ex-before, .ex-after {
-  background: none;
-  padding: 4px 0 10px 0;
-  font-size: 1.12rem;
-  color: #393939;
-  border: none;
-  margin-bottom: 0;
-  line-height: 1.8;
-  word-break: break-all;
+.checklist-table {
+    width: 100%; border-collapse: collapse; background: #fff;
+    margin: 0 auto;
+    font-size: 1.05rem;
 }
-.ex-after { color: #207030; }
+.checklist-table th {
+    background: linear-gradient(135deg, #92d050 80%, #7bc142 100%);
+    color: #fff; padding: 12px 7px; text-align: left; font-weight: 600;
+    font-size: 1.01rem;
+}
+.checklist-table td {
+    padding: 10px 7px; border-bottom: 1px solid #eef7e8; vertical-align: top;
+}
+.checklist-table tr:last-child td { border-bottom: none; }
+.checkbox-cell { text-align: center; width: 58px; }
+.checkbox {
+    width: 20px; height: 20px; accent-color: #92d050; transform: scale(1.07);
+}
+.comment-cell { width: 210px; }
+.comment-input {
+    width: 96%; min-height: 38px; padding: 7px 10px; border: 2px solid #e3f7cb; border-radius: 8px;
+    font-family: inherit; resize: vertical; font-size: 1rem; background: #fafafa;
+    box-sizing: border-box;
+}
+.comment-input:focus {
+    outline: none; border-color: #92d050; box-shadow: 0 0 7px #92d05044;
+}
 @media (max-width: 900px) {
-  .example-flex { flex-direction: column; gap: 14px; padding: 0 2vw 12px 2vw; }
-  .ex-before, .ex-after { font-size: 1.02rem; }
-  .ex-label { font-size: 1rem; }
+    .container { padding: 12px 2vw 36px 2vw; }
+    .header { padding: 28px 5px 13px 5px; }
+    .section { padding: 17px 3vw; }
+    .checklist-table th, .checklist-table td { font-size: 0.99rem; }
+    .checklist-table-wrap { padding: 10px 2px 10px 2px; }
 }
-.pixie-tip {
-    color: #5e8f3c; font-size: .98rem; margin-top: 10px; margin-bottom: 0;
+
+/* AI添削例レイアウト */
+.before-after-ex {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+    background: #f7faf8;
+    border-radius: 15px;
+    padding: 36px 18px 30px 18px;
+    margin-bottom: 32px;
+    align-items: flex-start;
 }
-.pixieAfter-box {
-    min-height: 78px; background: #eafee6; padding: 12px; border-radius: 8px;
-    font-size: 1.01rem; color: #174e13; white-space: pre-line;
+.before-block, .after-block {
+    display: flex;
+    flex-direction: column;
 }
-.btn-adv {
-    background: #92d050; color: #fff; border: none; border-radius: 7px; padding: 7px 21px;
-    font-size: 1rem; cursor: pointer; margin-top: 14px; align-self: flex-end; font-weight: 700;
-    transition: background 0.2s;
-}
-.btn-adv:hover { background: #7bc142; }
-.loading-typing {
-    margin-top: 8px;
-    color: #299900;
-    font-size: 1.08rem;
+.before-block h3, .after-block h3 {
+    font-size: 1.09rem;
     font-weight: bold;
-    letter-spacing: 1.2px;
-    display: flex; align-items: center;
+    margin-bottom: 16px;
 }
-.loading-dot {animation: blink 1s infinite;}
-@keyframes blink {
-    0% { opacity: 0.2;}
-    50% {opacity: 1;}
-    100% {opacity:0.2;}
+.before-block h3 { color: #d96c0c; }
+.after-block h3 { color: #23944d; }
+.before-label {
+    color: #d96c0c;
+    font-weight: bold;
+    margin-top: 8px;
+    margin-bottom: 4px;
+    font-size: 1.05rem;
+}
+.after-label {
+    color: #23944d;
+    font-weight: bold;
+    margin-top: 8px;
+    margin-bottom: 4px;
+    font-size: 1.05rem;
+}
+.before-text {
+    background: #fff8f2;
+    border-radius: 9px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    font-size: 1.06rem;
+    color: #90420e;
+}
+.after-text {
+    background: #ebfaed;
+    border-radius: 9px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    font-size: 1.06rem;
+    color: #185a27;
+}
+@media (max-width: 900px) {
+    .before-after-ex { grid-template-columns: 1fr; gap: 18px; }
 }
 </style>
 </head>
@@ -109,6 +151,7 @@ body {
             <button onclick="toggleAllCheckboxes(false)">全て解除</button>
             <button onclick="clearAllComments()">全コメント欄クリア</button>
         </div>
+        <div class="checklist-table-wrap">
         <table class="checklist-table" id="checklist-table">
             <thead>
                 <tr>
@@ -205,24 +248,24 @@ body {
 
     <!-- AI文章添削：例文カード型（旧レイアウト風） -->
 <div class="section">
-  <h2><span class="section-number">2</span>AI文章添削</h2>
-  <div class="example-flex">
-    <div>
-      <div class="ex-label">Before（例文：事務職）</div>
-      <div class="ex-before">書類作成や電話対応などの事務全般を担当してもらいます。</div>
-      <div class="ex-label">Before（例文：工場）</div>
-      <div class="ex-before">工場でパンの生地をライン作業で作成してもらいます。</div>
-      <div class="ex-label">Before（例文：販売）</div>
-      <div class="ex-before">店頭でのレジ業務、商品陳列、接客などをお願いします。</div>
-    </div>
-    <div>
-      <div class="ex-label after">After（添削例）</div>
-      <div class="ex-after">書類作成・データ入力・電話や来客対応など、幅広い事務業務を担当していただきます。周囲と連携しながら、正確かつ丁寧に取り組める方を歓迎します。</div>
-      <div class="ex-after">工場でパンの生地づくりを担当していただきます。ライン作業が中心ですが、分からないことは先輩が丁寧に指導しますので未経験でも安心です。</div>
-      <div class="ex-after">店舗でのレジ業務・商品の品出し・接客応対をお任せします。明るく元気な対応ができる方歓迎。未経験からスタートした先輩も多数活躍中です。</div>
-    </div>
-  </div>
-</div>
+        <h2><span class="section-number">2</span>AI文章添削</h2>
+        <div class="before-after-ex">
+            <div class="before-block">
+                <h3>Before（例文）</h3>
+                <div class="before-label">Before（例文：事務職）</div>
+                <div class="before-text">書類作成や電話対応などの事務全般を担当してもらいます。</div>
+                <div class="before-label">Before（例文：工場）</div>
+                <div class="before-text">工場でパンの生地をライン作業で作成してもらいます。</div>
+                <div class="before-label">Before（例文：販売）</div>
+                <div class="before-text">店頭でのレジ業務、商品陳列、接客などをお願いします。</div>
+            </div>
+            <div class="after-block">
+                <h3>After（添削例）</h3>
+                <div class="after-text">書類作成・データ入力・電話や来客対応など、幅広い事務業務を担当していただきます。周囲と連携しながら、正確かつ丁寧に取り組める方を歓迎します。</div>
+                <div class="after-text">工場でパンの生地づくりを担当していただきます。ライン作業が中心ですが、分からないことは先輩が丁寧に指導しますので未経験でも安心です。</div>
+                <div class="after-text">店舗でのレジ業務・商品の品出し・接客応対をお任せします。明るく元気な対応ができる方歓迎。未経験からスタートした先輩も多数活躍中です。</div>
+            </div>
+        </div>
 
 
 
